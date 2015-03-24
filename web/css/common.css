@@ -1,0 +1,1124 @@
+﻿/* Z indexes*******************************************
+    ui-dialog : 1500;
+    autocomplete_lists : 1000
+    cover_up : 500
+    map_details_panel : 400
+    map_bullets :  300
+*/
+
+/*
+
+1. Base
+2. Header 
+3. Header panel
+3. Specific code
+
+*/
+
+@font-face { font-family: "OpenSans-Regular"; src: url('../fonts/OpenSans-Regular.ttf'); }
+@font-face { font-family: "OpenSans-Light"; src: url('../fonts/OpenSans-Light.ttf'); }
+
+*:focus {
+outline: none;
+}
+*::-moz-focus-inner {
+border: none;
+}
+
+
+
+/*=================================================
+1 - BASE 
+=================================================*/
+
+body{
+    font-family : "OpenSans-Regular";
+	background-color:#FBFBFB;
+	margin-top:0px;
+    margin-bottom:0px;
+}
+
+
+/*=================================================
+2 -header 
+=================================================*/
+
+
+#home{
+	height:95px;
+	background-color:#34495E;
+	border-bottom: 1px solid #fff;
+}
+
+#home h1{
+	float:left;
+	color:#fff;
+	font: normal 26px "OpenSans-Light";
+	margin-left:20px;
+	margin-top:28px;
+	letter-spacing:0.1em;
+	text-shadow: 0px 1px 0px black;
+}
+
+#bt_home{
+	border-left: 1px solid #fff;
+	border-right:1px solid #fff;
+	height:95px; 
+	width:95px;
+	float:left;
+	background: url("../images/france_home.png") no-repeat 18px 20px #2B3D4E;	
+}
+
+#bt_home:hover{
+	transition: all .50s;
+	cursor:pointer;
+	background: url("../images/france_home.png") no-repeat 18px 20px  rgba(235, 85, 84,1);	
+}
+
+#home_panel{
+	width:1080px;
+	margin:0px auto 0px auto;
+}
+
+
+/*=================================================
+3 -header panel 
+=================================================*/
+
+#vespa_search_panel{
+	height:170px;
+	background-color:#526271;
+	border-bottom: 4px solid #fff;
+}
+
+#vespa_search_panel #search_panel{
+	height:100px;
+	width:1080px;
+	margin:0px auto 0px auto;
+}
+
+#vespa_search_panel #search_panel .title_form{
+	font-size:16px;
+	font-style:bold;
+	color:#FFF;	
+	padding-left:45px;
+	padding-top:10px;
+	height:30px;
+}
+
+#vespa_search_panel #search_panel #plante{
+	background: url("../images/plante.png") no-repeat 10px 5px;	
+}
+
+#vespa_search_panel #search_panel #maladie{
+	background: url("../images/maladie.png") no-repeat 18px 5px;	
+}
+
+#vespa_search_panel #search_panel #bioagresseur{
+	background: url("../images/ravageur.png") no-repeat 15px 8px;	
+}
+
+#vespa_search_panel #search_panel .form_panel{
+	float:left;
+	height:85px;
+	width:215px;
+	background-color:#5C6D7E;
+	border:1px solid #EB5554;
+	margin-top:10px;
+	margin-right:14px;
+}
+
+#vespa_search_panel #search_panel #form_date{
+	float:left;
+	height:85px;
+	width:380px;
+	background-color:#5C6D7E;
+	border:1px solid #EB5554;
+	margin-top:10px;
+}
+
+#form_date #debut{
+	width:180px;float:left;
+}
+
+#form_date #fin{
+	width:160px;
+	float:left;
+}
+
+#vespa_search_panel #search_panel .title_date{
+	font-size:16px;
+	font-style:bold;
+	color:#FFF;	
+	height:30px;
+    padding-left: 5px;
+    padding-top: 10px;
+}
+
+#vespa_search_panel #search_panel .title_date span{
+	margin-left:10px;
+}
+
+.autocomplete_span{
+	color:#FFF;
+	line-height:1.1em;
+	font-size:14px;
+	text-shadow: 0px 1px 0px black;
+	height:16px;
+	width:16px;
+	color:#FFF;
+	cursor:pointer;
+	word-wrap: break-word;
+}
+
+#div_plant .autocomplete_span{
+	background: url("../images/plant_close.png") no-repeat 0px 2px;	
+	padding-left:25px;
+}
+
+#div_plant .autocomplete_span:hover{
+	background: url("../images/plant_close_hover.png") no-repeat 0px 2px;	
+	padding-left:25px;	
+	color:#999;
+}
+
+#div_disease .autocomplete_span{
+	background: url("../images/maladie_close.png") no-repeat 0px 2px;	
+	padding-left:25px;	
+}
+
+#div_disease .autocomplete_span:hover{
+	background: url("../images/maladie_close_hover.png") no-repeat 0px 2px;	
+	padding-left:25px;	
+	color:#999;
+}
+
+#div_bug .autocomplete_span{
+	background: url("../images/rava_close.png") no-repeat 0px 2px;
+	padding-left:25px;		
+}
+
+#div_bug .autocomplete_span:hover{
+	background: url("../images/rava_close_hover.png") no-repeat 0px 2px;	
+	padding-left:25px;	
+	color:#999;
+}
+
+.autocomplete_div{
+	margin-left:20px;
+	width:190px;
+}
+
+#vespa_search_panel #form_date input{
+	margin-top:7px;
+	margin-right:15px;
+	margin-left:10px;
+	width:123px;
+	color:#526271;
+	background: url("../images/calendrier.png") no-repeat 5px 4px #FFF;	
+    padding-left:32px;
+}
+
+#vespa_search_panel #bt_search{
+	height:60px;
+	width:1080px;
+	margin:0px auto 0px auto;
+}
+
+#vespa_search_panel #btn_search{
+	height:45px;
+	background: url("../images/fleche.png") no-repeat 10px 10px #2B3D4E ;
+	width:310px;
+	border:1px solid #FFF;
+	margin-top:10px;
+	color:#FFF;
+	font-size:17px;
+	text-transform:uppercase;
+	font-family:"OpenSans-Light";
+	letter-spacing:0.1em;
+	padding-left:50px;
+	padding-bottom:4px;
+	margin-left:0px;
+}
+ 
+#vespa_search_panel #btn_search:hover{
+	background-color: rgba(235, 85, 84,1);
+	color: #fff;border: 1px solid #eaf4fb;
+	transition: all .50s;cursor:pointer;
+}
+
+ #search_panel input{
+	margin-left:15px;
+	width:175px;
+	height:20px;
+	color:#526271;
+}
+
+#bt_search input{
+	margin-left:15px;
+	width:175px;
+	height:20px;
+	color:#526271;	
+	margin-top:8px;
+}
+
+#vespa_search_panel #report_text_filter{
+	float:left;
+	height:45px;
+	width:215px;
+	background-color:#5C6D7E;
+	border:1px solid #EB5554;
+	margin-top:10px;
+	margin-right:14px;
+	color:#FFF;
+}
+	
+/* Autocomplete */
+
+div.autocomplete_list{	
+	width:280px;
+	margin-left:15px;
+    max-height:250px;
+    overflow-y:auto;
+    position:absolute;
+    background-color:#ffffff;
+	border-radius:3px;
+	z-index:1000;
+}
+
+div.list_item{
+    display:block;
+	background:#e5e5e6;
+    color: #2B3D4E;
+    font-size: 14px;
+    text-align: left;
+	line-height:1.8em;
+	padding-left:10px;
+	border-bottom:1px solid #ffffff;
+	border-left:5px solid #f5f5f5;
+	position:relative;
+	z-index:1000;
+}
+
+div.alt{
+	background:#F0F0FF;
+}
+
+#list_plant .list_item:hover{
+	border-left: 5px solid #279134;
+	background-color: #d7f4da;
+	cursor:pointer;
+	color:#279134;
+	text-decoration:underline;	
+}
+
+#list_disease .list_item:hover{
+	border-left: 5px solid #D95F8C;
+	background-color: #f7dee7;
+	cursor:pointer;
+	color:#D95F8C;
+	text-decoration:underline;
+}
+
+#list_bug .list_item:hover{
+	border-left: 5px solid #ffb000;
+	background-color: #fff3d8;
+	cursor:pointer;
+	color:#ffb000;
+	text-decoration:underline;
+}
+
+.list_item b{
+    text-decoration:underline;
+    font-weight:normal;
+}
+
+#vesp_center_panel{
+	width:1080px;
+	margin:0px auto 0px auto;
+	border-right:1px solid #D8D8DA;
+	min-height:570px;
+}
+
+/***************************************************************************************************************************/
+/* panels */
+
+.cover_up {
+    background-color:#ffffff;
+    position:absolute;
+    color:#EB5554;
+    opacity:0.6;
+    display:table;
+    text-align:center;
+    z-index:500;
+}
+
+.cover_up span {
+    margin:0 auto;
+    display:table-cell;
+    vertical-align:middle;
+    font-size:3em;
+}
+
+/***************************************************************************************************************************/
+/* left panel (report list and filter) */
+
+#vespa_left_panel{	
+	float:left;
+}
+
+#report_panel{	
+    width:490px;
+    height:570px;
+}
+
+#report_left_panel{
+   float:left;
+   width:190px;
+   background-color:#FBFBFB;
+   min-height:520px;
+}
+
+#report_left_panel h2{
+	font: normal 18px Helvetica, sans-serif;
+    color:#33465E;
+    margin-top: 15px;
+	margin-bottom:8px;
+}
+
+#report_left_panel h3{
+	font: normal 16px Helvetica, sans-serif;
+    color:#33465E;
+    margin-top: 0px;
+	padding-bottom:10px;
+	border-bottom:1px solid #34495E;
+}
+
+#report_left_panel .border{
+	font-size:12px;
+	color:#444444;
+	padding-bottom:5px;
+	max-height:424px;
+	overflow-y:auto;
+}
+
+#report_right_panel{
+    float:left;
+    width:300px;
+	background-color:#D8D8DA;
+	min-height:570px;	
+}
+
+#report_right_panel #report_list{
+    width:300px;
+	max-height:505px;
+	background-color:#D8D8DA;	
+	overflow-y:auto;
+}
+
+#report_right_panel #report_count{
+	font: normal 17px Helvetica, sans-serif;
+    color:#33465E;
+    margin-left: 10px;
+	padding-top:10px;
+	padding-bottom:10px;
+    width:100%;
+    float:left;
+}
+
+#report_right_panel #report_text_filter{
+    font: normal 15px Helvetica, sans-serif;
+    color:#33465E;
+    float:right;
+    width:61%;
+}
+
+#report_right_panel #report_text_filter input[type='text']{
+    width:100px;
+}
+
+ #report_right_panel #report_sorter{
+	font: normal 15px Helvetica, sans-serif;
+    color:#33465E;
+    margin-left: 10px;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+#report_right_panel #report_sorter .report_sorter_item{
+	margin-right:3px;
+    margin-left:3px;
+	color:#50baba;
+}
+
+#report_right_panel #report_sorter .report_sorter_item:hover{
+	text-decoration:underline;
+	cursor:pointer;
+}
+
+#report_filter span{
+	font-size:13px;
+	color:#444444;
+	height:30px;
+	line-height:1.7em;
+}
+	
+#report_filter .filter_year_item_count, #report_filter .filter_area_item_count{
+	font-size:13px;
+	color:#7171ff;
+	height:24px;
+	line-height:1.7em;
+	margin-left:10px;
+}
+	
+#report_filter span:hover{
+	color:#eb5554;
+}	
+	
+#report_filter div{
+	border-bottom:1px solid #ECECED;
+}
+
+#report_filter .filter_area_item_text{
+	width:100px;
+	white-space: nowrap;
+  	overflow: hidden;              
+  	text-overflow: ellipsis;
+}	
+
+.filter_reset{
+	font-size:13px;
+	color:#444444;
+	height:24px;
+	line-height:1.7em;		
+}
+
+.filter_reset:hover{
+	background-color:#FFFAE5;
+	cursor:pointer;
+	color:#C33;
+}
+
+.report_filter_title{
+    font-weight:bold;
+	font-family:Helvetica, sans-serif;
+	font-size:15px;
+	color:#33475E;
+	padding-bottom:5px;
+	margin-top:15px;
+}
+
+#report_filter_areas > div{
+	border-bottom:1px solid #ECECED;
+	height:24px;
+}
+
+#report_filter_years > div{
+	border-bottom:1px solid #ECECED;
+	}
+	
+#report_filter_years > div:hover, #report_filter_areas > div:hover{
+	background-color:#fff5cc;
+	cursor:pointer;
+}
+	
+#report_filter_areas > div.selected span
+,#report_filter_years > div.selected span{
+    border-bottom:1px solid #ECECED;
+	color:#F33;
+}
+
+#report_filter_areas > div.selected 
+,#report_filter_years > div.selected{
+	background-color:#fff5cc;
+}
+
+#report_list .report_item{
+	height:48px;
+	background-color:#E8E8E9;
+	margin:0px auto 0px auto;
+	border-bottom:1px solid #bebec1;
+	border-right:1px solid #bebec1;
+	border-left:1px solid #bebec1;
+	width:270px;
+}
+
+
+#report_sorter .report_sorter_item.selected{
+    color:#EB5554 !important;
+	text-decoration:underline;
+}
+
+
+/* liste BSV */
+
+.report_area{
+	background-color:#FFF;
+	height:22px;
+}
+	
+.report_area .report_area_name{
+	color:#33475e;
+	font-size:13px;
+	text-transform:uppercase;
+	font-weight:bold;
+	margin-left:10px;
+	width:160px;
+	line-height:1.8em;
+	white-space: nowrap;
+  	overflow: hidden;              
+  	text-overflow: ellipsis;
+}
+
+.report_area .report_date{
+	color:#33475e;
+	font-size:12px;
+	font-style:italic;
+	float:right;
+	margin-right:10px;
+	margin-top:2px;
+}		
+	
+.report_item .report_name{
+	padding-left:32px;
+	clear: both;
+	background: url("../images/icon_pdf.png")2px 2px no-repeat;	
+	white-space: nowrap;
+  	overflow: hidden;              
+  	text-overflow: ellipsis;
+	width:230px;
+}
+
+.report_item .report_name a{
+	color:#3f3f3f;
+	font-size:14px;
+	text-transform:lowercase;
+	text-decoration:none;
+	line-height:1.7em;
+}
+
+.report_item .report_name a:hover{
+	color:#EB5554;
+	text-decoration:underline;
+}
+
+.report_item .report_name:hover{
+	color:#EB5554;
+	cursor:pointer;
+	background: url("../images/icon_pdf-hover.png") 2px 2px no-repeat #fff5cc;
+	border-bottom:1px solid #bebec1;
+	width:238px;
+}
+
+.report_item.opened a{
+	color:#f33;
+}
+
+.report_item.opened .report_name{
+	background: url("../images/icon_pdf-hover.png") 2px 2px no-repeat #fff5cc;
+	padding-right:8px;
+}
+
+.report_item.opened .report_name:hover{
+	background: url("../images/icon_pdf-hover.png") 2px 2px no-repeat #fff5cc;
+	padding-right:0px;
+}
+
+.report_area .cube, .report_area .report_area_name{
+	float:left;
+}
+	
+.report_area .cube{
+	height:22px;
+	width:22px;
+}
+
+/***************************************************************************************************************************/
+/* right panel (map) */
+
+#vespa_right_panel{
+    float:left;
+    margin-top:0px;
+	margin-left:0px;
+    height:570px;
+	width:590px;
+}
+
+/* title map */
+
+#vespa_right_panel #title_map{
+	font: normal 18px Helvetica, sans-serif;
+	color:#33465e;
+	margin: 5px 0px 5px 10px;
+    /*height:3px;*/	
+}
+
+#vespa_right_panel #title_map .date_title {
+    opacity:0.6;
+  font-size:0.7em;
+}
+
+#vespa_right_panel #title_map .plant_title
+,#vespa_right_panel #title_map .disease_title
+,#vespa_right_panel #title_map .bioagressor_title {
+    font-style:italic;
+	color:#50BABA;
+}
+
+#vespa_right_panel #title_map .disease_title{
+	background: url("../images/disease_map_title.png") 0px 0px no-repeat;
+	padding-left:19px;
+	margin-left:8px;	
+}
+
+#vespa_right_panel #title_map .bioagressor_title {
+    background: url("../images/bio_map_title.png") 0px -6px no-repeat;
+	padding-left:28px;
+	margin-left:4px;
+}
+
+#vespa_right_panel #title_map .plant_title{
+	background: url("../images/plant_map_title.png") 0px -2px no-repeat;
+	padding-left:25px;
+	margin-left:8px;	
+}
+
+#vespa_right_panel #title_map .search_text_title
+,#vespa_right_panel #title_map .search_text_content_title {
+    color:#33465e;
+}
+
+#vespa_right_panel #title_map .search_text_content_title{
+	color:#50baba;
+}
+
+/* map container */
+
+#vespa_right_panel #map_container{
+	position:relative;
+    width: 570px; 
+    height: 532px;
+}
+
+/* Areas design */
+
+path.area {
+	stroke: #fff;
+	stroke-dasharray: none;
+	stroke-linecap: butt;
+	stroke-linejoin: bevel;
+	stroke-miterlimit: 4;
+	stroke-opacity: 0.7;
+	stroke-width: 7;
+}
+
+path[area_selected="true"] {
+    fill:#7150f0;
+}
+      
+path[area_selected="false"] {
+	    fill-opacity: 0.6;
+}
+
+rect[class="map_frame"], line[class="map_frame"] {
+		fill: none;
+		stroke: #D8D8DA;
+		stroke-dasharray: none;
+		stroke-miterlimit: 4;
+		stroke-opacity: 1;
+		stroke-width: 2;
+}
+
+/* map gradient color */
+
+#vespa_right_panel #map_gradient{
+    margin: -70px 0px 0px 20px;	
+	height:25px;
+    display:none;
+    color:#33465e;
+}
+
+#vespa_right_panel #map_gradient .color_grad{
+    width: 40px; 
+    height: 15px;
+	margin-right:15px;
+	float:left;
+}
+
+#min_count,#max_count{
+	float:left;
+    position:relative;
+    top:-3px;
+}
+
+#min_count{
+    padding-right:15px;
+}
+
+#vespa_right_panel #map_gradient #grad_1{
+	background-color:#A6DBDB;
+}
+
+#vespa_right_panel #map_gradient #grad_2{
+	background-color:#82CDCD;
+}
+
+#vespa_right_panel #map_gradient #grad_3{
+	background-color:#50BABA;
+}
+
+#vespa_right_panel #map_gradient #grad_4{
+	background-color:#2D9393;
+}
+
+#vespa_right_panel #map_gradient #grad_5{
+	background-color:#0C4847;
+}
+
+/* Clear area selection */
+
+#btn_clear_area_filter{ 
+	background: url("../images/deselect.png") 5px 10px no-repeat #FAFAFA;
+	border : 1px solid #DCDCDC; 
+    padding : 10px 10px 10px 30px; 
+    text-align : center; 
+    font : bold 13px arial; 
+	color : #5C6D7E; 
+    box-shadow: 0px 0px 3px rgba(107,107,107, 0.3); 
+    border-radius:3px;
+    cursor: pointer; 
+    position:absolute;
+    top:15px;
+    left:18px;
+    display:none;
+}
+
+#btn_clear_area_filter:not(.inactive):hover, #btn_clear_area_filter:hover {
+	background: url("../images/deselect_hover.png") 5px 10px no-repeat #FAFAFA;
+ 	border : 1px solid #B1B1B1; color : #333333; box-shadow: 0px 0px 3px rgba(0,86,156, 0.6); 
+}
+
+/* bullets */
+
+.map_bullet{	 
+	position:absolute;
+    z-index:300;
+    color:Black;
+    text-align:center;
+}
+
+.map_bullet.bullet_occurrence{
+    width:57px;
+    height:66px;
+    background: url("../images/bullet_plant.png") no-repeat;
+    background-position:6px 28px;
+    color:#ffffff;
+    font-weight:400;
+	font-size:11px;
+}
+
+.map_bullet.bullet_occurrence:hover{
+    background-image: url("../images/bullet_plant_hover.png");
+	cursor:pointer;
+}
+
+.bullet_occurrence span{
+    left: 0px;
+    position: relative;
+    top: 35px;
+}
+
+.bullet_occurrence:hover .btn_select_details
+,.bullet_occurrence:hover .btn_select_area{
+    display:block;
+}
+
+.bullet_occurrence .btn_select_details
+,.bullet_occurrence .btn_select_area{
+    display:none;
+}
+
+.btn_select_details
+,.btn_select_area{
+    position:absolute;
+    top:0px;
+    z-index:300;
+    width:28px;
+    height:28px;
+    cursor:pointer;
+}
+
+.btn_select_details {
+    background: url("../images/select_details.png") 0px 0px no-repeat;
+    left:0px;
+}
+
+.btn_select_area {
+    background: url("../images/select_area.png") 0px 0px no-repeat;
+    left:29px;
+}
+.btn_select_details:hover {
+    background: url("../images/select_details_hover.png") 0px 0px no-repeat;
+}
+.btn_select_area:hover {
+    background: url("../images/select_area_hover.png") 0px 0px no-repeat;
+}
+
+/* details */
+	
+#hid{display:none;}
+
+#vespa_footer_panel{
+	height:69px;
+	background-color:#2B3D4E;
+	border-top:2px solid #EB5554;
+}
+
+.footer_links {
+    height:65px;
+	width:1080px;
+	margin:0px auto 0px auto;
+}
+
+ .footer_links a {
+    float: right;
+    margin-left: 25px;
+	margin-top:0px;  
+}
+
+#vespa_footer_panel .footer_links #cortext_link div {
+	background: url("../images/logo_cortext.png") no-repeat;
+	height:30px;
+	width:130px;
+	margin-top:22px;
+	margin-left:-10px;
+}
+
+#vespa_footer_panel .footer_links #inra_link div {
+	background: url("../images/inra_logo.png") no-repeat;
+   height:55px;
+	width:120px;
+	margin-top:9px;
+}
+
+#vespa_footer_panel .footer_links #DGAL_link div {
+	background: url("../images/logo_DGAL.png") no-repeat;
+	height:60px;
+	width:60px;
+	margin-top:7px;
+}
+
+#vespa_footer_panel .footer_links #PIC_link div {
+	color:#ffffff;
+	font-weight:400;
+	font-size:14px;
+	letter-spacing:0.2em;
+	text-shadow: 0px 1px 0px black;
+	height:50px;
+	width:67px;
+	margin-left:-9px;
+	margin-top:15px;
+}
+
+#vespa_footer_panel .footer_links #PIC_link{
+	text-decoration:none;
+}
+
+#vespa_footer_panel .footer_links #mailto{
+	background: url("../images/mailto.png") no-repeat 0px -4px;
+	padding-left:44px;
+	line-height:1.8em;
+	height:60px;
+	width:60px;
+	margin-top:18px;
+	float:left;
+	color:#ffffff;
+	text-decoration:none;
+
+}
+#vespa_footer_panel .footer_links #mailto:hover{
+	background: url("../images/mailto_hover.png") no-repeat 0px -4px;
+	color:#E45454;
+}
+
+/* Console d'affichage des erreurs   */
+
+.ui-dialog {
+    z-index:1500;
+}
+
+#vespa_console_panel #console_content div.console_error {
+    color:#EB5554;
+    font-size:0.8em;
+    margin-bottom:5px;
+}
+
+#vespa_console_panel #console_content div.error_title span.title{
+    font-weight:bold;
+}
+
+#vespa_console_panel #console_content div.error_title span.date {
+    color:#34495E;
+    font-weight:normal;
+    margin-right:10px;
+}
+
+#vespa_console_panel #console_content div.error_title span.error_call_stack {
+    font-size:0.6em;
+}
+
+#ui-datepicker-div{z-index:1000 !important;}
+
+
+/* test dialog pour area details */
+
+#area_details_dialog {
+     padding:0;
+}
+
+.ui-dialog[aria-describedby="area_details_dialog"] {
+    padding:0;
+    border: 1px solid #D8D8DA;
+	box-shadow: 1px 1px 25px #555;
+}
+
+.ui-dialog[aria-describedby="area_details_dialog"] > div.ui-dialog-titlebar {
+	
+	background-color:#34495E;
+    font-size: 16px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-top: 4px;
+}
+  
+#detail_panel .detail_list_tab {
+    font-size:0.8em;
+	color:#FFF;
+	margin-top:8px;
+	border:none;
+}
+
+#detail_panel .detail_list_tab a {
+    padding-left:35px;
+}
+
+#detail_panel #plant_tab a{
+	background: url("../images/plantes_liste.png") 6px 3px no-repeat #fff;
+	color:#279134;
+	width:135px;
+	border:none;
+}
+
+#detail_panel #disease_tab a{
+	color:#d95f8c;	
+	background: url("../images/maladie_list.png") 9px 4px no-repeat #fff;
+	border-top:1px solid #d95f8c;
+	border-left:1px solid #d95f8c;
+	border-right:1px solid #d95f8c;
+}
+
+#detail_panel #occurence_tab a{
+	background: url("../images/relation_list.png") 3px -1px no-repeat #fff;
+	color:#0F45CE;
+	width:135px;
+	border:none;
+}
+
+#detail_panel #disease_tab a:hover{
+	background-color:#f7dee7 ;
+}
+
+#detail_panel #bioagressor_tab a:hover{
+	background-color:#fff3d8 ;
+}
+
+#detail_panel #occurence_tab {
+	margin-top:0px;
+}
+
+#detail_panel #bioagressor_tab a{
+	background: url("../images/bio_list.png") 4px 2px no-repeat #FFF;
+	color:#FFB000;
+	border-top:1px solid #FFB000;
+	border-left:1px solid #FFB000;
+	border-right:1px solid #FFB000;
+}
+
+#detail_panel .ui-widget-header{
+	background-color:#FFF;
+	border:none;
+	margin-top:0px;
+}
+	
+#area_details_dialog .ui-widget-content{
+	border:none;
+}
+
+#area_details_dialog #detail_panel .list_content {
+    overflow-y:auto;
+    padding:0;
+}
+
+#area_details_dialog #detail_panel .list_content ul{
+    padding-left:0px;
+	margin-bottom:0px;
+	margin-top:0px;
+}
+
+#area_details_dialog #detail_panel .list_content li{
+     background-color: #e5e5e6;
+    border-bottom: 1px solid #ffffff;
+    border-left: 5px solid #e5e5e6;
+    color: #2b3d4e;
+    font-size: 14px;
+    line-height: 1.2;
+    list-style-type: none;
+    min-height: 22px;
+    padding-bottom: 0;
+    padding-top: 7px;
+	padding-right:0px;
+	padding-left:15px;
+    text-align: left;`	
+}
+
+#area_details_dialog #detail_panel .list_content .alt{
+	background-color:#F0F0FF;
+	border-left: 5px solid #F0F0FF;
+}
+
+#area_details_dialog #detail_panel .bioagressor_list li:hover{
+	border-left: 5px solid #ffb000;
+	background-color: #fff3d8;
+	cursor:pointer;
+	color:#ffb000;
+	text-decoration:underline;
+}
+
+#area_details_dialog #detail_panel .disease_list li:hover{
+	border-left: 5px solid #D95F8C;
+	background-color: #f7dee7;
+	cursor:pointer;
+	color:#D95F8C;
+	cursor:pointer;
+	text-decoration:underline;
+}
+
+#area_details_dialog #detail_panel .plant_list li:hover{
+	border-left: 5px solid #279134;
+	background-color: #d7f4da;
+	cursor:pointer;
+	color:#279134;
+	text-decoration:underline;	
+}
+
+#area_details_dialog #detail_panel .occurence_list span.span_date{
+	font-weight:bold;
+    margin-right:10px;	
+}
+
+#area_details_dialog #detail_panel .occurence_list li:hover{	
+	border-left: 5px solid #0F45CE;
+	background-color: #bbcdfa;
+	cursor:pointer;
+	color:#0F45CE;
+}

@@ -1,0 +1,216 @@
+﻿@charset "UTF-8";
+/* CSS Document */
+
+
+/*=================================================
+1 - COLORS AREA MAP
+=================================================*/
+
+.report_item[id_area="1"]  div.cube{
+	background-color:#008D75;
+}
+
+.report_item[id_area="1"]  div.report_area{
+	border-bottom:1px solid #008D75;
+}
+
+.report_item[id_area="2"]  div.cube{
+	background-color:#FF5000;
+}
+
+.report_item[id_area="2"]  div.report_area{
+	border-bottom:1px solid #FF5000;
+}
+
+.report_item[id_area="3"]  div.cube{
+	background-color:#4D0034;
+}
+
+.report_item[id_area="3"]  div.report_area{
+	border-bottom:1px solid #4D0034;
+}
+
+.report_item[id_area="4"]  div.cube{
+	background-color:#BBE114;
+}
+
+.report_item[id_area="4"]  div.report_area{
+	border-bottom:1px solid #BBE114;
+}
+
+.report_item[id_area="5"]  div.cube{
+	background-color:#7000BF;
+}
+
+.report_item[id_area="5"]  div.report_area{
+	border-bottom:1px solid #7000BF;
+}
+
+
+.report_item[id_area="6"]  div.cube{
+	background-color:#4F3130;	
+}
+
+.report_item[id_area="6"]  div.report_area{
+	border-bottom:1px solid #4F3130;
+}	
+
+.report_item[id_area="7"]  div.cube{
+	background-color:#FF1F3D;	
+}
+
+.report_item[id_area="7"]  div.report_area{
+	border-bottom:1px solid #FF1F3D;
+}
+
+.report_item[id_area="8"]  div.cube{
+	background-color:#2AACE3;
+}
+
+.report_item[id_area="8"]  div.report_area{
+	border-bottom:1px solid #2AACE3;
+}
+
+.report_item[id_area="9"]  div.cube{
+	background-color:#A45627;	
+}
+
+.report_item[id_area="9"]  div.report_area{
+	border-bottom:1px solid #A45627;
+}	
+
+.report_item[id_area="10"]  div.cube{
+	background-color:#8A015E;
+}
+
+.report_item[id_area="10"]  div.report_area{
+	border-bottom:1px solid #8A015E;
+}
+
+.report_item[id_area="11"]  div.cube{
+	background-color:#EF3DD4;	
+}
+
+.report_item[id_area="11"]  div.report_area{
+	border-bottom:1px solid #EF3DD4;
+}
+
+.report_item[id_area="12"]  div.cube{
+	background-color:#5A7106;	
+}
+
+.report_item[id_area="12"]  div.report_area{
+	border-bottom:1px solid #5A7106;
+}	
+
+.report_item[id_area="13"]  div.cube{
+	background-color:#2E6E7F;	
+}
+
+.report_item[id_area="13"]  div.report_area{
+	border-bottom:1px solid #2E6E7F;
+}
+
+.report_item[id_area="14"]  div.cube{
+	background-color:#FF6000;	
+}
+
+.report_item[id_area="14"]  div.report_area{
+	border-bottom:1px solid #FF6000;
+}
+
+.report_item[id_area="15"]  div.cube{
+	background-color:#382B38;	
+}
+
+.report_item[id_area="15"]  div.report_area{
+	border-bottom:1px solid #382B38;
+}
+
+.report_item[id_area="16"]  div.cube{
+	background-color:#2D095E;	
+}
+
+.report_item[id_area="16"]  div.report_area{
+	border-bottom:1px solid #2D095E;
+}
+
+.report_item[id_area="17"]  div.cube{
+	background-color:#00FFFF;	
+}
+
+.report_item[id_area="17"]  div.report_area{
+	border-bottom:1px solid #00FFFF;
+}
+
+.report_item[id_area="18"]  div.cube{
+	background-color:#990000;	
+}
+
+.report_item[id_area="18"]  div.report_area{
+	border-bottom:1px solid #990000;
+}	
+
+.report_item[id_area="19"]  div.cube{
+	background-color:#E6C50B;	
+}
+
+.report_item[id_area="19"]  div.report_area{
+	border-bottom:1px solid #E6C50B;
+}
+	
+.report_item[id_area="20"]  div.cube{
+	background-color:#BA00D9;	
+}
+
+.report_item[id_area="20"]  div.report_area{
+	border-bottom:1px solid #BA00D9;
+}
+
+.report_item[id_area="21"]  div.cube{
+	background-color:#5E688B;	
+}
+
+.report_item[id_area="21"]  div.report_area{
+	border-bottom:1px solid #5E688B;
+}
+
+.report_item[id_area="22"]  div.cube{
+	background-color:#C1D8D6;	
+}
+
+.report_item[id_area="22"]  div.report_area{
+	border-bottom:1px solid #C1D8D6;
+}
+	
+.report_item[id_area="23"]  div.cube{
+	background-color:#FFB0B6;	
+}
+
+.report_item[id_area="23"]  div.report_area{
+	border-bottom:1px solid #FFB0B6;
+}
+
+.report_item[id_area="24"]  div.cube{
+	background-color:#AECA57;	
+}
+
+.report_item[id_area="24"]  div.report_area{
+	border-bottom:1px solid #AECA57;
+}
+
+.report_item[id_area="25"]  div.cube{
+	background-color:#FF87A0;	
+}
+
+.report_item[id_area="25"]  div.report_area{
+	border-bottom:1px solid #FF87A0;
+}
+
+.report_item[id_area="26"]  div.cube{
+	background-color:#0C9;	
+}
+
+.report_item[id_area="26"]  div.report_area{
+	border-bottom:1px solid #0C9;
+}
