@@ -1,5 +1,4 @@
 /vendor/*
-/logs/*
+/logs/*.log
 /vendor/
-!/logs/
 composer.lock
