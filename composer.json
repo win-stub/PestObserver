@@ -1,0 +1,32 @@
+{
+    "name": "cortext/vespa",
+    "description": "A datamining tool in Plant's Diseases and BioAgressors reports",
+    "keywords": ["vespa", "plant", "bioagressor", "disease", "datamining"],
+    "homepage": "http://vespa.cortext.net",
+    "authors": [
+        {
+            "name": "Nicolas Turenne",
+            "email": "nturenne.inra@yahoo.fr"
+        },
+        {
+            "name": "Guillaume Orsal",
+            "email": "guillaume@orsal.net",
+            "homepage": "https://www.orsal.fr"
+        },
+        {
+            "name": "Philippe Breucker",
+            "email": "breucker@ifris.org",
+            "homepage": "http://www.breucker.org"
+    ],
+    "require": {
+        "silex/silex": "~1.2",
+        "jasongrimes/silex-simpleuser": "~2.0",
+        "monolog/monolog": "~1.13",
+        "twig/twig": "~1.13,>=1.13.1",
+        "doctrine/dbal": "~2.2",
+        "symfony/stopwatch": "~2.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2"
+    }
+}
