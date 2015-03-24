@@ -237,30 +237,85 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
         $dateEnd = $req['DateEnd'];
         $searchText = $req['SearchText'];
     }
-    
-    // Construction de la requête
-    //if ( ! is_null( $idBioagressor ) ) {
-    $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
-                   area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
-            FROM report
-            LEFT JOIN area
-            ON report.id_area = area.id
-            WHERE report.date IS NOT NULL
-            ORDER BY report.date
-            LIMIT 0,10";
-    $res_reports = $app['db']->fetchAll($sql);
 
-    $sql = "SELECT YEAR(report.date) as id, YEAR(report.Date) as text, COUNT( report.Id ) as count
-            FROM report
-            WHERE id IN ( SELECT report.id FROM report WHERE report.date IS NOT NULL )
-            GROUP BY YEAR(report.date)
-            LIMIT 30,10";
-    $res_years = $app['db']->fetchAll($sql);
+    // Petit reformatage
+    if ( is_null( $searchText ) || $searchText == '' ) {
+        $textLike = null;
+    } else {
+        $textLike = "%".$searchText."%";
+    }
+
+    // Construction de la requête
+
+/* Requete générée
+SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
+                       area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
+                FROM report
+                LEFT JOIN area ON report.id_area = area.id
+                LEFT JOIN plant_bioagressor ON report.id = plant_bioagressor.id_report
+                WHERE ( '78' IS NULL OR plant_bioagressor.id_plant = '78' )
+                AND ( plant_bioagressor.id_bioagressor = '' )
+                AND ( '02/11/1945' IS NULL OR report.date > '02/11/1945' )
+                AND ( '28/07/2011' IS NULL OR report.date < '28/07/2011' )
+                AND ( NULL IS NULL OR report.content LIKE NULL )
+                GROUP BY report.id
+                ORDER BY report.id*/
+
+    if ( ! is_null( $idBioagressor ) ) {
+        $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
+                       area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
+                FROM report
+                INNER JOIN area ON report.id_area = area.id
+                INNER JOIN plant_bioagressor ON report.id = plant_bioagressor.id_report
+                WHERE ( ? IS NULL OR plant_bioagressor.id_plant = ? )
+                AND ( plant_bioagressor.id_bioagressor = ? )
+                AND ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.content LIKE ? )
+                GROUP BY report.id
+                ORDER BY report.id";
+        $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idBioagressor, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
+    } else if ( ! is_null( $idDisease ) ) {
+        $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
+                       area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
+                FROM report
+                INNER JOIN area ON report.id_area = area.id
+                INNER JOIN plant_disease ON report.id = plant_disease.id_report
+                WHERE ( ? IS NULL OR plant_disease.id_plant = ? )
+                AND ( plant_disease.id_disease = ? )
+                AND ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.content LIKE ? )
+                GROUP BY report.id
+                ORDER BY report.id";
+        $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idDisease, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
+    } else {
+        $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
+                       area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
+                FROM report
+                INNER JOIN area ON report.id_area = area.id
+                LEFT JOIN plant_bioagressor
+                ON plant_bioagressor.id_plant = ? AND report.id = plant_bioagressor.id_report
+                LEFT JOIN plant_disease 
+                ON plant_disease.id_plant = ? AND report.id = plant_disease.id_report
+                WHERE ( plant_bioagressor.id_plant = ? OR plant_disease.id_plant = ? )
+                AND ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
+                AND ( ? IS NULL OR report.content LIKE ? )
+                GROUP BY report.id
+                ORDER BY report.id";
+        $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idPlant, $idPlant, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
+    }
 
 /*{"AreaName":"Midi-Pyrénées","Date":"\/Date(-260589600000+0200)\/","DateString":"29\/09\/1961","Id":2194,"Id_Area":9,"Name":"AA_TC_Midi_Pyrenees_1973_013","Year":1961},*/
 
     // Reformatage des résultats
+
     foreach( $res_reports as $report) {
+        // Stockage des Ids pour la requête sur les années un peu plus loin
+        $ids[] = $report['id'];
+        
+        // Conversion de l'encodage
         $reports[] = array( "AreaName"=>mb_convert_encoding($report['areaname'], "UTF-8"),
                             "Date"=>mb_convert_encoding($report['date'], "UTF-8"),
                             "DateString"=>str_replace('.','/',mb_convert_encoding($report['datestring'], "UTF-8")),
@@ -269,6 +324,13 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                             "Name"=>mb_convert_encoding($report['name'], "UTF-8"),
                             "Year"=>(int) $report['year'] );
     }
+    $ids = "( ".implode(",",$ids)." )";
+
+    $sql = "SELECT YEAR(report.date) as id, YEAR(report.Date) as text, COUNT( report.Id ) as count
+            FROM report
+            WHERE id IN ".$ids."
+            GROUP BY YEAR(report.date)";
+    $res_years = $app['db']->fetchAll($sql);
 
 /*{"Id":1965,"Text":"1965","Count":8}*/
     foreach( $res_years as $year) {
