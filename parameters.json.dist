@@ -1,0 +1,14 @@
+{
+    "monolog": {
+        "logfile": "../logs/vespa.log",
+        "name": "Vespa"
+    },
+    "db.options": {
+        "driver": "pdo_mysql",
+        "host": "localhost",
+        "dbname": "vespa",
+        "user": "vespa",
+        "password": "",
+        "charset": "utf8"
+    }
+}
