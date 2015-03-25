@@ -14,6 +14,8 @@ $app = new Silex\Application();
 $app['debug'] = true;
 $app['stopwatch'] = new Stopwatch();
 
+require_once __DIR__.'/../config/config.php';
+
 $app->before(function ($request) use ($app) {
     $app['stopwatch']->start('vespa');
 }, Application::EARLY_EVENT);
@@ -33,8 +35,8 @@ $app->register($simpleUserProvider);
 
 // Register Monolog
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/../logs/vespa.log',
-    'monolog.name' => 'Vespa',
+    'monolog.logfile' => $parameters['monolog']['logfile'],
+    'monolog.name' => $parameters['monolog']['name']
 ));
 
 // Mount the user controller routes:
@@ -52,8 +54,8 @@ $app->get('/', function() use ($app) {
 $app->post('/Services/Vespa.svc/GetInitializationInfos', function() use ($app) {
     $sql = "SELECT DATE_FORMAT(min(date),'%d/%m/%Y') AS MinDate, DATE_FORMAT(max(date),'%d/%m/%Y') AS MaxDate FROM report";
     $res = $app['db']->fetchAssoc($sql);
-    //$response['ErrorMessage'] = null;
-    //$response['ErrorStackTrace'] = null;
+    $response['ErrorMessage'] = null;
+    $response['ErrorStackTrace'] = null;
     $response['MinDate'] = $res['MinDate'];
     $response['MaxDate'] = $res['MaxDate'];
     return $app->json($response);
@@ -169,20 +171,48 @@ $app->post('/Services/Vespa.svc/GetDiseases', function(Request $request) use ($a
  *                                                                                       *
  *****************************************************************************************/
 /* Reponse pour la bourgogne après une recherche sur la pomme de terre:
-{"ErrorMessage":null,"ErrorStackTrace":null,"AreaName":"Bourgogne","Bioagressors":[{"Id":40,"Text":"acarien"},{"Id":321,"Text":"adventice"},{"Id":362,"Text":"altise"},{"Id":346,"Text":"altise des crucifères"},{"Id":309,"Text":"campagnol des champs"},{"Id":1,"Text":"carpocapse"},{"Id":30,"Text":"carpocapse des pommes et des poires"},{"Id":189,"Text":"cécidomyie"},{"Id":210,"Text":"charançon"},{"Id":28,"Text":"charançon des siliques de colza"},{"Id":137,"Text":"doryphore"},{"Id":235,"Text":"grosse altise du colza"},{"Id":59,"Text":"hanneton"},{"Id":3,"Text":"méligèthe"},{"Id":338,"Text":"mouche"},{"Id":74,"Text":"mouche de la betterave"},{"Id":280,"Text":"mouche de la carotte"},{"Id":27,"Text":"mouche de la cerise"},{"Id":12,"Text":"mouche de l'oignon"},{"Id":18,"Text":"mouche de l'olive"},{"Id":158,"Text":"mouche grise"},{"Id":198,"Text":"mouche méditerranéenne des fruits"},{"Id":355,"Text":"nématode"},{"Id":167,"Text":"nématode doré"},{"Id":21,"Text":"pou"},{"Id":295,"Text":"puceron"},{"Id":220,"Text":"puceron des épis de céréales"},{"Id":334,"Text":"punaise"},{"Id":272,"Text":"pyrale"},{"Id":99,"Text":"pyrale du maïs"},{"Id":282,"Text":"taupe d'europe"},{"Id":136,"Text":"taupin"},{"Id":179,"Text":"teigne du poireau"},{"Id":44,"Text":"tétranyque"},{"Id":164,"Text":"tordeuse"},{"Id":313,"Text":"tordeuse orientale du pêcher"}],"Diseases":[{"Id":36,"Text":"alternariose"},{"Id":76,"Text":"anthracnose"},{"Id":128,"Text":"black-rot de la vigne"},{"Id":20,"Text":"cercosporose"},{"Id":123,"Text":"cloque du pêcher"},{"Id":133,"Text":"cylindrosporiose des crucifères"},{"Id":240,"Text":"feu bactérien sur arbres fruitiers"},{"Id":151,"Text":"maladie des taches brunes sur orge"},{"Id":113,"Text":"mildiou"},{"Id":24,"Text":"mildiou de la tomate"},{"Id":44,"Text":"mildiou de la vigne"},{"Id":226,"Text":"mildiou de l'oignon"},{"Id":95,"Text":"mildiou sur pomme de terre"},{"Id":60,"Text":"nécrose du collet des crucifères"},{"Id":23,"Text":"oïdium"},{"Id":30,"Text":"oïdium de la vigne"},{"Id":185,"Text":"oïdium des arbres fruitiers"},{"Id":233,"Text":"piétin-verse"},{"Id":7,"Text":"pourriture"},{"Id":201,"Text":"pourriture grise"},{"Id":102,"Text":"rhizoctone"},{"Id":188,"Text":"rouille brune du blé"},{"Id":167,"Text":"sclérotiniose"},{"Id":187,"Text":"septoriose"},{"Id":15,"Text":"septoriose du céleri"},{"Id":131,"Text":"sharka"},{"Id":48,"Text":"tavelure"},{"Id":42,"Text":"tavelure du pommier"},{"Id":254,"Text":"virus"}],"Id_Area":17,"Occurences":[],"Plants":[]}*/
+{"ErrorMessage":null,
+"ErrorStackTrace":null,
+"AreaName":"Bourgogne",
+"Bioagressors":[{"Id":40,"Text":"acarien"},{"Id":321,"Text":"adventice"},{"Id":362,"Text":"altise"},{"Id":346,"Text":"altise des crucifères"},{"Id":309,"Text":"campagnol des champs"},{"Id":1,"Text":"carpocapse"},{"Id":30,"Text":"carpocapse des pommes et des poires"},{"Id":189,"Text":"cécidomyie"},{"Id":210,"Text":"charançon"},{"Id":28,"Text":"charançon des siliques de colza"},{"Id":137,"Text":"doryphore"},{"Id":235,"Text":"grosse altise du colza"},{"Id":59,"Text":"hanneton"},{"Id":3,"Text":"méligèthe"},{"Id":338,"Text":"mouche"},{"Id":74,"Text":"mouche de la betterave"},{"Id":280,"Text":"mouche de la carotte"},{"Id":27,"Text":"mouche de la cerise"},{"Id":12,"Text":"mouche de l'oignon"},{"Id":18,"Text":"mouche de l'olive"},{"Id":158,"Text":"mouche grise"},{"Id":198,"Text":"mouche méditerranéenne des fruits"},{"Id":355,"Text":"nématode"},{"Id":167,"Text":"nématode doré"},{"Id":21,"Text":"pou"},{"Id":295,"Text":"puceron"},{"Id":220,"Text":"puceron des épis de céréales"},{"Id":334,"Text":"punaise"},{"Id":272,"Text":"pyrale"},{"Id":99,"Text":"pyrale du maïs"},{"Id":282,"Text":"taupe d'europe"},{"Id":136,"Text":"taupin"},{"Id":179,"Text":"teigne du poireau"},{"Id":44,"Text":"tétranyque"},{"Id":164,"Text":"tordeuse"},{"Id":313,"Text":"tordeuse orientale du pêcher"}],
+"Diseases":[{"Id":36,"Text":"alternariose"},{"Id":76,"Text":"anthracnose"},{"Id":128,"Text":"black-rot de la vigne"},{"Id":20,"Text":"cercosporose"},{"Id":123,"Text":"cloque du pêcher"},{"Id":133,"Text":"cylindrosporiose des crucifères"},{"Id":240,"Text":"feu bactérien sur arbres fruitiers"},{"Id":151,"Text":"maladie des taches brunes sur orge"},{"Id":113,"Text":"mildiou"},{"Id":24,"Text":"mildiou de la tomate"},{"Id":44,"Text":"mildiou de la vigne"},{"Id":226,"Text":"mildiou de l'oignon"},{"Id":95,"Text":"mildiou sur pomme de terre"},{"Id":60,"Text":"nécrose du collet des crucifères"},{"Id":23,"Text":"oïdium"},{"Id":30,"Text":"oïdium de la vigne"},{"Id":185,"Text":"oïdium des arbres fruitiers"},{"Id":233,"Text":"piétin-verse"},{"Id":7,"Text":"pourriture"},{"Id":201,"Text":"pourriture grise"},{"Id":102,"Text":"rhizoctone"},{"Id":188,"Text":"rouille brune du blé"},{"Id":167,"Text":"sclérotiniose"},{"Id":187,"Text":"septoriose"},{"Id":15,"Text":"septoriose du céleri"},{"Id":131,"Text":"sharka"},{"Id":48,"Text":"tavelure"},{"Id":42,"Text":"tavelure du pommier"},{"Id":254,"Text":"virus"}],
+"Id_Area":17,
+"Occurences":[],
+"Plants":[]}*/
 
-/* Requete
-{Id_Plant: "78", Id_Bioagressor: "", Id_Disease: "", DateStart: "02/11/1945", DateEnd: "28/07/2011",…}
-DateEnd: "28/07/2011"
-DateStart: "02/11/1945"
-Id_Area: "17"
-Id_Bioagressor: ""
-Id_Disease: ""
-Id_Plant: "78"
-SearchText: ""
-*/
 $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use ($app) {
-    $response['ACompleter'] = "";
+    // Récupération des critères de recherche
+    $req = json_decode( $request->getContent(), true );
+    if ( ( is_null( $req ) ) || (count($req) == 0 ) ) {
+        $idPlant = $request->get('Id_Plant');
+        $idBioagressor = $request->get('Id_Bioagressor');
+        $idDisease = $request->get('Id_Disease');
+        $idArea = $request->get('Id_Area');
+        $dateStart = $request->get('DateStart');
+        $dateEnd = $request->get('DateEnd');
+        $searchText = $request->get('SearchText');
+    } else {
+        $idPlant = $req['Id_Plant'];
+        $idBioagressor = $req['Id_Bioagressor'];
+        $idDisease = $req['Id_Disease'];
+        $idArea = $req['Id_Area'];
+        $dateStart = $req['DateStart'];
+        $dateEnd = $req['DateEnd'];
+        $searchText = $req['SearchText'];
+    }
+
+    // Recherche du nom de zone
+    if ( is_null( $idArea ) || $idArea == "" ) {
+        $response['AreaName'] = null;
+    } else {
+        $sql = "SELECT Name FROM area WHERE id = ?";
+        $res = $app['db']->fetchAssoc( $sql, array( $idArea ) );
+        foreach( $res as $key=>$value )
+            $response['AreaName'] = $value ;
+    }
+
+    $response['ErrorMessage'] = null;
+    $response['ErrorStackTrace'] = null;
     return $app->json($response);
 });
 
@@ -194,7 +224,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
  *                                                                                       *
  *****************************************************************************************/
 $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request) use ($app) {
-    // Récupération du filtre text
+    // Récupération des critères de recherche
     $req = json_decode( $request->getContent(), true );
     if ( ( is_null( $req ) ) || (count($req) == 0 ) ) {
         $idPlant = $request->get('Id_Plant');
@@ -425,12 +455,12 @@ $app['swiftmailer.options'] = array();
  *                                                                                           *
  ********************************************************************************************/
 $app['db.options'] = array(
-    'driver'   => 'pdo_mysql',
-    'host' => 'localhost',
-    'dbname' => 'vespa',
-    'user' => 'vespa',
-    'password' => '',
-    'charset' => 'utf8',
+    'driver'   => $parameters['db.options']['driver'],
+    'host' => $parameters['db.options']['host'],
+    'dbname' => $parameters['db.options']['dbname'],
+    'user' => $parameters['db.options']['user'],
+    'password' => $parameters['db.options']['password'],
+    'charset' => $parameters['db.options']['charset'],
 );
 
 
