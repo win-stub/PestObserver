@@ -17,6 +17,7 @@
             "name": "Philippe Breucker",
             "email": "breucker@ifris.org",
             "homepage": "http://www.breucker.org"
+        },
     ],
     "require": {
         "silex/silex": "~1.2",
