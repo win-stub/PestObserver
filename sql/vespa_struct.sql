@@ -149,8 +149,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(100) DEFAULT NULL,
   `isEnabled` tinyint(1) NOT NULL DEFAULT '1',
   `confirmationToken` varchar(100) DEFAULT NULL,
-  `timePasswordResetRequested` int(11) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `timePasswordResetRequested` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_email` (`email`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -162,7 +165,8 @@ DROP TABLE IF EXISTS `user_custom_fields`;
 CREATE TABLE IF NOT EXISTS `user_custom_fields` (
   `user_id` int(11) unsigned NOT NULL,
   `attribute` varchar(50) NOT NULL DEFAULT '',
-  `value` varchar(255) DEFAULT NULL
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`attribute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -216,18 +220,6 @@ ALTER TABLE `report`
 --
 ALTER TABLE `sysdiagrams`
  ADD PRIMARY KEY (`diagram_id`);
-
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
- ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `user_custom_fields`
---
-ALTER TABLE `user_custom_fields`
- ADD PRIMARY KEY (`user_id`,`attribute`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
