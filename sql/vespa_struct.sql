@@ -197,31 +197,31 @@ ALTER TABLE `plant`
 -- Index pour la table `plant_bioagressor`
 --
 ALTER TABLE `plant_bioagressor`
- ADD PRIMARY KEY (`Id`), ADD KEY `IX_FK_Plant_Bioagressor2Bioagressor` (`Id_Bioagressor`), ADD KEY `IX_FK_Plant_Bioagressor2Plant` (`Id_Plant`), ADD KEY `IX_FK_Plant_Bioagressor2Report` (`Id_Report`);
+ ADD PRIMARY KEY (`Id`);
 
 --
 -- Index pour la table `plant_disease`
 --
 ALTER TABLE `plant_disease`
- ADD PRIMARY KEY (`Id`), ADD KEY `IX_FK_MaladieRelation` (`Id_Disease`), ADD KEY `IX_FK_PlanteRelation` (`Id_Plant`), ADD KEY `IX_FK_RelationBulletin` (`Id_Report`);
+ ADD PRIMARY KEY (`Id`);
 
 --
 -- Index pour la table `report`
 --
 ALTER TABLE `report`
- ADD PRIMARY KEY (`Id`), ADD KEY `IX_FK_ReportArea` (`Id_Area`);
+ ADD PRIMARY KEY (`Id`);
 
 --
 -- Index pour la table `sysdiagrams`
 --
 ALTER TABLE `sysdiagrams`
- ADD PRIMARY KEY (`diagram_id`), ADD UNIQUE KEY `UK_principal_name` (`principal_id`,`name`);
+ ADD PRIMARY KEY (`diagram_id`);
 
 --
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `unique_email` (`email`), ADD UNIQUE KEY `username` (`username`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `user_custom_fields`
