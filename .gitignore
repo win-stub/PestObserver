@@ -3,3 +3,4 @@
 /vendor/
 composer.lock
 /web/reports/*.pdf
+parameters.json
