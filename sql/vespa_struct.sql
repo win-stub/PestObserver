@@ -229,45 +229,6 @@ ALTER TABLE `users`
 ALTER TABLE `user_custom_fields`
  ADD PRIMARY KEY (`user_id`,`attribute`);
 
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `sysdiagrams`
---
-ALTER TABLE `sysdiagrams`
-MODIFY `diagram_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `users`
---
-ALTER TABLE `users`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- Contraintes pour les tables exportées
---
-
---
--- Contraintes pour la table `plant_bioagressor`
---
-ALTER TABLE `plant_bioagressor`
-ADD CONSTRAINT `FK_Plant_Bioagressor2Bioagressor` FOREIGN KEY (`Id_Bioagressor`) REFERENCES `bioagressor` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `FK_Plant_Bioagressor2Plant` FOREIGN KEY (`Id_Plant`) REFERENCES `plant` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `FK_Plant_Bioagressor2Report` FOREIGN KEY (`Id_Report`) REFERENCES `report` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `plant_disease`
---
-ALTER TABLE `plant_disease`
-ADD CONSTRAINT `FK_MaladieRelation` FOREIGN KEY (`Id_Disease`) REFERENCES `disease` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `FK_Plant_Disease2Report` FOREIGN KEY (`Id_Report`) REFERENCES `report` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `report`
---
-ALTER TABLE `report`
-ADD CONSTRAINT `FK_Report2Area` FOREIGN KEY (`Id_Area`) REFERENCES `area` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
