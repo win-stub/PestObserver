@@ -103,6 +103,7 @@ $app->post('/Services/Vespa.svc/GetPlants', function (Request $request) use ($ap
  *****************************************************************************************/
 $app->post('/Services/Vespa.svc/GetBugs', function(Request $request) use ($app) {
     // Récupération du filtre text
+    $req = json_decode( $request->getContent(), true );
     if ( ( is_null( $req ) ) || (count($req) == 0 ) ) {
         $text = $request->get('text');
     } else {
@@ -138,6 +139,7 @@ $app->post('/Services/Vespa.svc/GetBugs', function(Request $request) use ($app) 
  *****************************************************************************************/
 $app->post('/Services/Vespa.svc/GetDiseases', function(Request $request) use ($app) {
     // Récupération du filtre text
+    $req = json_decode( $request->getContent(), true );
     if ( ( is_null( $req ) ) || (count($req) == 0 ) ) {
         $text = $request->get('text');
     } else {
