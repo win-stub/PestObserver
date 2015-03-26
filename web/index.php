@@ -417,6 +417,15 @@ $app['user.options'] = array(
 $app['security.firewalls'] = array(
     'login' => array(
         'pattern' => '^/user/login$',
+        'anonymous' => true,
+    ),
+    'register' => array(
+        'pattern' => '^/user/register$',
+        'anonymous' => true,
+    ),
+    'forgot-password' => array(
+        'pattern' => '^/user/forgot-password$',
+        'anonymous' => true,
     ),
     'secured_area' => array(
         'pattern' => '^.*$',
