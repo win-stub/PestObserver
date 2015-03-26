@@ -11,7 +11,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
     
 // Activation du debugging a desactiver en production
-$app['debug'] = true;
+$app['debug'] = false;
 $app['stopwatch'] = new Stopwatch();
 
 require_once __DIR__.'/../config/config.php';
@@ -427,6 +427,14 @@ $app['security.firewalls'] = array(
         'pattern' => '^/user/forgot-password$',
         'anonymous' => true,
     ),
+    'reset-password' => array(
+        'pattern' => '^/user/reset-password/.*$',
+        'anonymous' => true,
+    ),
+    'confirm-email' => array(
+        'pattern' => '^/user/confirm-email/.*$',
+        'anonymous' => true,
+    ),
     'secured_area' => array(
         'pattern' => '^.*$',
         'anonymous' => false,
@@ -456,7 +464,7 @@ $app['twig.path'] = array(__DIR__.'/../views');
  *                                                                                           *
  ********************************************************************************************/
 $app['swiftmailer.options'] = array();
-
+$app['swiftmailer.use_spool'] = false;
 
 /*********************************************************************************************
  *                                                                                           *
