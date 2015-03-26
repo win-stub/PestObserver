@@ -35,7 +35,7 @@ $app->register($simpleUserProvider);
 
 // Register Monolog
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => $parameters['monolog']['logfile'],
+    'monolog.logfile' => __DIR__.$parameters['monolog']['logfile'],
     'monolog.name' => $parameters['monolog']['name']
 ));
 
