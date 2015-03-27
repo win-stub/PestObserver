@@ -43,9 +43,15 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 // Mount the user controller routes:
 $app->mount('/user', $simpleUserProvider);
 
-$app->get('/', function() use ($app) {
-    return file_get_contents('header.php').file_get_contents('vespa.php').file_get_contents('footer.php');
-});
+/*****************************************************************************************
+ *                                                                                       *
+ * Intégration de l'interface de Datamining de Vespa                                     *
+ *                                                                                       *
+ *****************************************************************************************/
+$app->get('/', function(Request $request) use ($app) {
+    //return file_get_contents('header.php').file_get_contents('vespa.php').file_get_contents('footer.php');
+    return $app['twig']->render('vespa.twig', array());
+})->bind('vespa');
 
 /*****************************************************************************************
  *                                                                                       *
@@ -534,6 +540,7 @@ $app['user.options'] = array(
         'view' => 'view.twig',
         'edit' => 'edit.twig',
         'list' => 'list.twig',
+        'vespa' => 'vespa.twig',
     ),
 
     // Configure the user mailer for sending password reset and email confirmation messages.

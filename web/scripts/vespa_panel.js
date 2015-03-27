@@ -1,4 +1,4 @@
-﻿
+
 /***************************************************************************************************************************/
 /* Global contants */
 
@@ -6,7 +6,6 @@
 var url_webservices = "/Services/Vespa.svc/"; // url prod
 var duration_fade_short = 100;
 var duration_fade_long = 400;
-//var url_webservices = "http://212.198.172.12:8080/Vespa/Services/Vespa.svc/"; 
 
 /* Autocomplete parameters *********************************************************/
 var autocomplete_min_length = 2;
@@ -88,11 +87,6 @@ function vespa_panel(panel) {
     }
 
     /* Init *********************************************************/
-
-    // Page reload
-    panel.find("#bt_home").click(function () {
-        window.location.reload(true);
-    });
 
     // Init Console 
     panel.console_panel = new console_panel(panel.find("#vespa_console_panel"));

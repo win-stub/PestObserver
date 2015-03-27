@@ -1122,3 +1122,17 @@ rect[class="map_frame"], line[class="map_frame"] {
 	cursor:pointer;
 	color:#0F45CE;
 }
+
+/* Integration avec Silex */
+.container {
+    min-height: 620px;
+}
+* {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.navbar-vespa {
+  float: right;
+  margin: 22px;
+}
