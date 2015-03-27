@@ -88,6 +88,11 @@ function vespa_panel(panel) {
 
     /* Init *********************************************************/
 
+    // Page reload
+    panel.find("#bt_home").click(function () {
+        window.location.reload(true);
+    });
+
     // Init Console 
     panel.console_panel = new console_panel(panel.find("#vespa_console_panel"));
     // Init search panel
