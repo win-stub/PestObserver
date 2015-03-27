@@ -278,7 +278,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
             AND ( plant_disease.id_plant = ? )
             AND ( report.id_area = ? )
             AND ( ? IS NULL OR report.content LIKE ? )
-            ORDER BY plant.name";
+            ORDER BY disease.name";
     $res_diseases = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idArea, $textLike, $textLike ) );
 
     // Récupération des nuisibles de la zone
@@ -295,7 +295,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
             AND ( plant_bioagressor.id_plant = ? )
             AND ( report.id_area = ? )
             AND ( ? IS NULL OR report.content LIKE ? )
-            ORDER BY plant.name";
+            ORDER BY bioagressor.name";
     $res_bugs = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idArea, $textLike, $textLike ) );
 
     // Calcul des occurences de la zone
@@ -371,7 +371,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
     }
 
     // Construction de la requête en fonction des critères de recherche en paramètre
-    if ( ! is_null( $idBioagressor ) ) {
+    if ( ! ( is_null( $idBioagressor ) || $idBioagressor == "" ) ) {
         $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
                        area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
                 FROM report
@@ -385,7 +385,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                 GROUP BY report.id
                 ORDER BY report.id";
         $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idBioagressor, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
-    } else if ( ! is_null( $idDisease ) ) {
+    } else if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
         $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
                        area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
                 FROM report
@@ -404,10 +404,8 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                        area.name as areaname, report.id_area as id_area, YEAR(report.date) as year
                 FROM report
                 INNER JOIN area ON report.id_area = area.id
-                LEFT JOIN plant_bioagressor
-                ON plant_bioagressor.id_plant = ? AND report.id = plant_bioagressor.id_report
-                LEFT JOIN plant_disease 
-                ON plant_disease.id_plant = ? AND report.id = plant_disease.id_report
+                LEFT JOIN plant_bioagressor ON plant_bioagressor.id_plant = ? AND report.id = plant_bioagressor.id_report
+                LEFT JOIN plant_disease ON plant_disease.id_plant = ? AND report.id = plant_disease.id_report
                 WHERE ( plant_bioagressor.id_plant = ? OR plant_disease.id_plant = ? )
                 AND ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
@@ -418,22 +416,30 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
     }
 
     // Reformatage des résultats
-    foreach( $res_reports as $report) {
-        // Stockage des Ids pour la requête sur les années un peu plus loin
-        $ids[] = (int) $report['id'];
-        
-        // Conversion de l'encodage
-        $reports[] = array( "AreaName"=>mb_convert_encoding($report['areaname'], "UTF-8"),
-                            "Date"=>mb_convert_encoding($report['date'], "UTF-8"),
-                            "DateString"=>str_replace('.','/',mb_convert_encoding($report['datestring'], "UTF-8")),
-                            "Id"=>(int) $report['id'],
-                            "Id_Area"=>(int) $report['id_area'],
-                            "Name"=>mb_convert_encoding($report['name'], "UTF-8"),
-                            "Year"=>(int) $report['year'] );
+    if ( count( $res_reports ) ) {
+        foreach( $res_reports as $report) {
+            // Stockage des Ids pour la requête sur les années un peu plus loin
+            $ids[] = (int) $report['id'];
+            
+            // Conversion de l'encodage
+            $reports[] = array( "AreaName"=>mb_convert_encoding($report['areaname'], "UTF-8"),
+                                "Date"=>mb_convert_encoding($report['date'], "UTF-8"),
+                                "DateString"=>str_replace('.','/',mb_convert_encoding($report['datestring'], "UTF-8")),
+                                "Id"=>(int) $report['id'],
+                                "Id_Area"=>(int) $report['id_area'],
+                                "Name"=>mb_convert_encoding($report['name'], "UTF-8"),
+                                "Year"=>(int) $report['year'] );
+        }
+    } else {
+        $reports = array();
+        $ids = array();
     }
 
     // Préparation de la liste des reports ID pour la requête sur les années
     $ids = "( ".implode(",",$ids)." )";
+    // Pour éviter un bug en cas de liste vide
+    if ( $ids == "(  )" )
+        $ids = "( '' )";
 
     // Comptage des reports par année
     $sql = "SELECT YEAR(report.date) AS id, YEAR(report.Date) AS text, COUNT( report.Id ) AS count
@@ -443,10 +449,14 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
     $res_years = $app['db']->fetchAll($sql);
 
     // Reformatage des résultats
-    foreach( $res_years as $year) {
-        $years[] = array( "Id"=>(int) $year['id'],
-                          "Text"=>$year['id'],
-                          "Count"=>(int) $year['count'] );
+    if ( count( $res_years ) ) {
+        foreach( $res_years as $year) {
+            $years[] = array( "Id"=>(int) $year['id'],
+                              "Text"=>$year['id'],
+                              "Count"=>(int) $year['count'] );
+        }
+    } else {
+        $years = array();
     }
 
     // Récupération des noms des critères de recherche s'ils sont présents
