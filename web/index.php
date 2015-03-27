@@ -216,7 +216,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
     }
 
     // Récupération des plantes de la zone
-    if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
+    if ( ! ( is_null( $idDisease ) ) ) {
         $sql = "SELECT DISTINCT plant.id AS Id, plant.name AS Text
                 FROM area
                 LEFT OUTER JOIN report ON area.id = report.id_area
@@ -291,7 +291,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
     }
 
     // Calcul des occurences de la zone
-    if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
+    if ( ! ( is_null( $idDisease ) ) ) {
         $sql = "SELECT report.id AS Id, plant_disease.Comment AS Text, DATE_FORMAT(report.date,'%d/%m/%Y') AS Date
                 FROM report
                 LEFT OUTER JOIN plant_disease ON plant_disease.id_report = report.id
@@ -322,6 +322,18 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
     foreach( $results as $res) {
         $res_occ[] = array( "Id"=>(int) $res['Id'], "Text"=>mb_convert_encoding($res['Text'], "UTF-8"), "Date"=>$res['Date'] );
     }
+
+    /* En fonction des champs fournis en entrée (donc de l'état d'avancement du processus de recherche de l'utilisateur)
+       on ne lui présente pas les mêmes types de résultats, même s'ils pourraient être disponible. Ce filtre pourrait
+       être en amont pour limiter le nombre de requête */
+    if ( ! ( is_null($idPlant) && ((!is_null($idBioagressor)) || (!(is_null($idDisease))))) )
+        $res_plants = array();
+    if (!((!is_null($idPlant)) && (is_null($idBioagressor)) && (is_null($idDisease)))) {
+        $res_bugs = array();
+        $res_diseases = array();
+    }
+    if (!((!is_null($idPlant)) && ((!is_null($idBioagressor)) || (!is_null($idDisease)))))
+        $res_occ = array();
 
     // Construction de la réponse
     $response['ErrorMessage'] = null;
@@ -449,7 +461,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
             FROM report
             WHERE id IN ".$ids."
             GROUP BY YEAR(report.date)
-            ORDER BY YEAR(report.date)";
+            ORDER BY date";
     $res_years = $app['db']->fetchAll($sql);
 
     // Reformatage des résultats
