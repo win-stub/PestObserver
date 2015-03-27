@@ -172,25 +172,6 @@ $app->post('/Services/Vespa.svc/GetDiseases', function(Request $request) use ($a
  * Requête de récupération des infos sur la zone géographique                            *
  *                                                                                       *
  *****************************************************************************************/
-/* Reponse pour la bourgogne après une recherche sur la pomme de terre:
-{"ErrorMessage":null,
-"ErrorStackTrace":null,
-"AreaName":"Bourgogne",
-"Bioagressors":[{"Id":40,"Text":"acarien"},{"Id":321,"Text":"adventice"},{"Id":362,"Text":"altise"},{"Id":346,"Text":"altise des crucifères"},{"Id":309,"Text":"campagnol des champs"},{"Id":1,"Text":"carpocapse"},{"Id":30,"Text":"carpocapse des pommes et des poires"},{"Id":189,"Text":"cécidomyie"},{"Id":210,"Text":"charançon"},{"Id":28,"Text":"charançon des siliques de colza"},{"Id":137,"Text":"doryphore"},{"Id":235,"Text":"grosse altise du colza"},{"Id":59,"Text":"hanneton"},{"Id":3,"Text":"méligèthe"},{"Id":338,"Text":"mouche"},{"Id":74,"Text":"mouche de la betterave"},{"Id":280,"Text":"mouche de la carotte"},{"Id":27,"Text":"mouche de la cerise"},{"Id":12,"Text":"mouche de l'oignon"},{"Id":18,"Text":"mouche de l'olive"},{"Id":158,"Text":"mouche grise"},{"Id":198,"Text":"mouche méditerranéenne des fruits"},{"Id":355,"Text":"nématode"},{"Id":167,"Text":"nématode doré"},{"Id":21,"Text":"pou"},{"Id":295,"Text":"puceron"},{"Id":220,"Text":"puceron des épis de céréales"},{"Id":334,"Text":"punaise"},{"Id":272,"Text":"pyrale"},{"Id":99,"Text":"pyrale du maïs"},{"Id":282,"Text":"taupe d'europe"},{"Id":136,"Text":"taupin"},{"Id":179,"Text":"teigne du poireau"},{"Id":44,"Text":"tétranyque"},{"Id":164,"Text":"tordeuse"},{"Id":313,"Text":"tordeuse orientale du pêcher"}],
-"Diseases":[{"Id":36,"Text":"alternariose"},{"Id":76,"Text":"anthracnose"},{"Id":128,"Text":"black-rot de la vigne"},{"Id":20,"Text":"cercosporose"},{"Id":123,"Text":"cloque du pêcher"},{"Id":133,"Text":"cylindrosporiose des crucifères"},{"Id":240,"Text":"feu bactérien sur arbres fruitiers"},{"Id":151,"Text":"maladie des taches brunes sur orge"},{"Id":113,"Text":"mildiou"},{"Id":24,"Text":"mildiou de la tomate"},{"Id":44,"Text":"mildiou de la vigne"},{"Id":226,"Text":"mildiou de l'oignon"},{"Id":95,"Text":"mildiou sur pomme de terre"},{"Id":60,"Text":"nécrose du collet des crucifères"},{"Id":23,"Text":"oïdium"},{"Id":30,"Text":"oïdium de la vigne"},{"Id":185,"Text":"oïdium des arbres fruitiers"},{"Id":233,"Text":"piétin-verse"},{"Id":7,"Text":"pourriture"},{"Id":201,"Text":"pourriture grise"},{"Id":102,"Text":"rhizoctone"},{"Id":188,"Text":"rouille brune du blé"},{"Id":167,"Text":"sclérotiniose"},{"Id":187,"Text":"septoriose"},{"Id":15,"Text":"septoriose du céleri"},{"Id":131,"Text":"sharka"},{"Id":48,"Text":"tavelure"},{"Id":42,"Text":"tavelure du pommier"},{"Id":254,"Text":"virus"}],
-"Id_Area":17,
-"Occurences":[],
-"Plants":[]}*/
-
-/*DateEnd: "28/07/2011"
-DateStart: "02/11/1945"
-Id_Area: "10"
-Id_Bioagressor: ""
-Id_Disease: ""
-Id_Plant: "78"
-SearchText: ""*/
-/*{"ErrorMessage":null,"ErrorStackTrace":null,"AreaName":"Centre","Bioagressors":[{"Id":338,"Text":"mouche"},{"Id":158,"Text":"mouche grise"},{"Id":136,"Text":"taupin"}],"Diseases":[{"Id":57,"Text":"flétrissement bactérien à xanthomonas des graminées"},{"Id":113,"Text":"mildiou"},{"Id":7,"Text":"pourriture"}],"Id_Area":10,"Occurences":[],"Plants":[]}*/
-
 $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use ($app) {
     // Récupération des critères de recherche
     $req = json_decode( $request->getContent(), true );
@@ -212,6 +193,11 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
         $searchText = $req['SearchText'];
     }
 
+    // Champ vide transformé en null pour utiliser le text mysql NULL IS NULL qui neutralise la valeur NULL mais pas la valeur vide
+    if ( $idPlant == "" ) $idPlant = null ;
+    if ( $idBioagressor == "" ) $idBioagressor = null ;
+    if ( $idDisease == "" ) $idDisease = null ;
+
     // Petit reformatage du motif de recherche textuel
     if ( is_null( $searchText ) || $searchText == '' ) {
         $textLike = null;
@@ -221,119 +207,131 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
 
     // Recherche du nom de zone
     if ( is_null( $idArea ) || $idArea == "" ) {
-        $response['AreaName'] = null;
+        $areaname = null;
     } else {
         $sql = "SELECT Name FROM area WHERE id = ?";
         $res = $app['db']->fetchAssoc( $sql, array( $idArea ) );
         foreach( $res as $key=>$value )
-            $response['AreaName'] = $value ;
+            $areaname = $value ;
     }
 
     // Récupération des plantes de la zone
     if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
-        $sql = "SELECT DISTINCT plant.id, plant.name
+        $sql = "SELECT DISTINCT plant.id AS Id, plant.name AS Text
                 FROM area
-                LEFT OUTER JOIN report
-                ON area.id = report.id_area
-                LEFT OUTER JOIN plant_disease
-                ON plant_disease.id_report = report.id
-                LEFT OUTER JOIN plant
-                ON plant_disease.id_plant = plant.id
+                LEFT OUTER JOIN report ON area.id = report.id_area
+                LEFT OUTER JOIN plant_disease ON plant_disease.id_report = report.id
+                LEFT OUTER JOIN plant ON plant_disease.id_plant = plant.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( plant_disease.id_disease = ? )
                 AND ( report.id_area = ? )
                 AND ( ? IS NULL OR report.content LIKE ? )
                 ORDER BY plant.name";
-        $res_plants = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idDisease, $idArea, $textLike, $textLike ) );
+        $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idDisease, $idArea, $textLike, $textLike ) );
     } else {
-        $sql = "SELECT DISTINCT plant.id, plant.name
+        $sql = "SELECT DISTINCT plant.id AS Id, plant.name AS Text
                 FROM area
-                LEFT OUTER JOIN report
-                ON area.id = report.id_area
-                LEFT OUTER JOIN plant_bioagressor
-                ON plant_bioagressor.id_report = report.id
-                LEFT OUTER JOIN plant
-                ON plant_bioagressor.id_plant = plant.id
+                LEFT OUTER JOIN report ON area.id = report.id_area
+                LEFT OUTER JOIN plant_bioagressor ON plant_bioagressor.id_report = report.id
+                LEFT OUTER JOIN plant ON plant_bioagressor.id_plant = plant.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( plant_bioagressor.id_bioagressor = ? )
                 AND ( report.id_area = ? )
                 AND ( ? IS NULL OR report.content LIKE ? )
                 ORDER BY plant.name";
-        $res_plants = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idBioagressor, $idArea, $textLike, $textLike ) );
+        $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idBioagressor, $idArea, $textLike, $textLike ) );
+    }
+
+    // Reformatage des résultats
+    $res_plants = array();
+    foreach( $results as $res) {
+        $res_plants[] = array( "Id"=>(int) $res['Id'], "Text"=>mb_convert_encoding($res['Text'], "UTF-8") );
     }
 
     // Récupération des maladies de la zone
-    $sql = "SELECT DISTINCT disease.id, disease.name
+    $sql = "SELECT DISTINCT disease.id AS Id, disease.name AS Text
             FROM area
-            LEFT OUTER JOIN report
-            ON area.id = report.id_area
-            LEFT OUTER JOIN plant_disease
-            ON plant_disease.id_report = report.id
-            LEFT OUTER JOIN disease
-            ON plant_disease.id_disease = disease.id
+            LEFT OUTER JOIN report ON area.id = report.id_area
+            LEFT OUTER JOIN plant_disease ON plant_disease.id_report = report.id
+            LEFT OUTER JOIN disease ON plant_disease.id_disease = disease.id
             WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
             AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
-            AND ( plant_disease.id_plant = ? )
+            AND ( ? IS NULL OR plant_disease.id_plant = ? )
             AND ( report.id_area = ? )
             AND ( ? IS NULL OR report.content LIKE ? )
             ORDER BY disease.name";
-    $res_diseases = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idArea, $textLike, $textLike ) );
+    $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idPlant, $idArea, $textLike, $textLike ) );
+
+    // Reformatage des résultats
+    $res_diseases = array();
+    foreach( $results as $res) {
+        $res_diseases[] = array( "Id"=>(int) $res['Id'], "Text"=>mb_convert_encoding($res['Text'], "UTF-8") );
+    }
 
     // Récupération des nuisibles de la zone
-    $sql = "SELECT DISTINCT bioagressor.id, bioagressor.name
+    $sql = "SELECT DISTINCT bioagressor.id AS Id, bioagressor.name AS Text
             FROM area
-            LEFT OUTER JOIN report
-            ON area.id = report.id_area
-            LEFT OUTER JOIN plant_bioagressor
-            ON plant_bioagressor.id_report = report.id
-            LEFT OUTER JOIN bioagressor
-            ON plant_bioagressor.id_bioagressor = bioagressor.id
-            WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
+            LEFT OUTER JOIN report ON area.id = report.id_area
+            LEFT OUTER JOIN plant_bioagressor ON plant_bioagressor.id_report = report.id
+            LEFT OUTER JOIN bioagressor ON plant_bioagressor.id_bioagressor = bioagressor.id
+            WHERE ( ? IS NULL OR report.date > STR_TO_DATE(  ? , '%d/%m/%Y' ) )
             AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
-            AND ( plant_bioagressor.id_plant = ? )
+            AND ( ? IS NULL OR plant_bioagressor.id_plant = ? )
             AND ( report.id_area = ? )
             AND ( ? IS NULL OR report.content LIKE ? )
             ORDER BY bioagressor.name";
-    $res_bugs = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idArea, $textLike, $textLike ) );
+    $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idPlant, $idPlant, $idArea, $textLike, $textLike ) );
+
+    // Reformatage des résultats
+    $res_bugs = array();
+    foreach( $results as $res) {
+        $res_bugs[] = array( "Id"=>(int) $res['Id'], "Text"=>mb_convert_encoding($res['Text'], "UTF-8") );
+    }
 
     // Calcul des occurences de la zone
     if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
         $sql = "SELECT report.id AS Id, plant_disease.Comment AS Text, report.date AS Date
                 FROM report
-                LEFT OUTER JOIN plant_disease
-                ON plant_disease.id_report = report.id
+                LEFT OUTER JOIN plant_disease ON plant_disease.id_report = report.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( plant_disease.id_disease = ? )
                 AND ( report.id_area = ? )
                 AND ( ? IS NULL OR report.content LIKE ? )
-                AND ( plant_disease.id_plant = ? )
+                AND ( ? IS NULL OR plant_disease.id_plant = ? )
                 ORDER BY report.date";
-        $res_occ = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idDisease, $idArea, $textLike, $textLike, $idPlant ) );
+        $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idDisease, $idArea, $textLike, $textLike, $idPlant, $idPlant ) );
     } else {
         $sql = "SELECT report.id AS Id, plant_bioagressor.Comment AS Text, report.date AS Date
                 FROM report
-                LEFT OUTER JOIN plant_bioagressor
-                ON plant_bioagressor.id_report = report.id
+                LEFT OUTER JOIN plant_bioagressor ON plant_bioagressor.id_report = report.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( plant_bioagressor.id_bioagressor = ? )
                 AND ( report.id_area = ? )
                 AND ( ? IS NULL OR report.content LIKE ? )
-                AND ( plant_bioagressor.id_plant = ? )
+                AND ( ? IS NULL OR plant_bioagressor.id_plant = ? )
                 ORDER BY report.date";
-        $res_occ = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idBioagressor, $idArea, $textLike, $textLike, $idPlant ) );
+        $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idBioagressor, $idArea, $textLike, $textLike, $idPlant, $idPlant ) );
     }
     
+    // Reformatage des résultats
+    $res_occ = array();
+    foreach( $results as $res) {
+        $res_occ[] = array( "Id"=>(int) $res['Id'], "Text"=>mb_convert_encoding($res['Text'], "UTF-8"), "Date"=>$res['Date'] );
+    }
+
+    // Construction de la réponse
     $response['ErrorMessage'] = null;
     $response['ErrorStackTrace'] = null;
-    $response['Id_Area'] = $idArea;
-    $response['Plants'] = $res_plants;
+    $response['AreaName'] = $areaname;
     $response['Bioagressors'] = $res_bugs;
     $response['Diseases'] = $res_diseases;
+    $response['Id_Area'] = (int) $idArea;
     $response['Occurences'] = $res_occ;
+    $response['Plants'] = $res_plants;
     return $app->json($response);
 });
 
@@ -363,6 +361,11 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
         $searchText = $req['SearchText'];
     }
 
+    // Champ vide transformé en null pour utiliser le text mysql NULL IS NULL qui neutralise la valeur NULL mais pas la valeur vide
+    if ( $idPlant == "" ) $idPlant = null ;
+    if ( $idBioagressor == "" ) $idBioagressor = null ;
+    if ( $idDisease == "" ) $idDisease = null ;
+
     // Petit reformatage du motif de recherche textuel
     if ( is_null( $searchText ) || $searchText == '' ) {
         $textLike = null;
@@ -383,7 +386,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.content LIKE ? )
                 GROUP BY report.id
-                ORDER BY report.id";
+                ORDER BY report.date";
         $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idBioagressor, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
     } else if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
         $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
@@ -397,7 +400,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.content LIKE ? )
                 GROUP BY report.id
-                ORDER BY report.id";
+                ORDER BY report.date";
         $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idDisease, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
     } else {
         $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
@@ -411,7 +414,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
                 AND ( ? IS NULL OR report.date < STR_TO_DATE( ? , '%d/%m/%Y' ) )
                 AND ( ? IS NULL OR report.content LIKE ? )
                 GROUP BY report.id
-                ORDER BY report.id";
+                ORDER BY report.date";
         $res_reports = $app['db']->fetchAll($sql, array( $idPlant, $idPlant, $idPlant, $idPlant, $dateStart, $dateStart, $dateEnd, $dateEnd, $textLike, $textLike ) );
     }
 
@@ -445,7 +448,8 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
     $sql = "SELECT YEAR(report.date) AS id, YEAR(report.Date) AS text, COUNT( report.Id ) AS count
             FROM report
             WHERE id IN ".$ids."
-            GROUP BY YEAR(report.date)";
+            GROUP BY YEAR(report.date)
+            ORDER BY YEAR(report.date)";
     $res_years = $app['db']->fetchAll($sql);
 
     // Reformatage des résultats
