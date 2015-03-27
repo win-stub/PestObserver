@@ -1,0 +1,32 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+/* TEAM */
+
+    Idea: Nicolas Turenne
+    Contact: nturenne.inra[@]yahoo.fr
+
+    Web developer: Guillaume Orsal
+    Site: https://www.orsal.fr
+    Contact: contact[@]orsal.net, +33660314757
+    Twitter: @Gallyan
+    Google+ Profile: https://plus.google.com/+GuillaumeOrsal
+    From: Paris, France
+
+    Platform administrator: Philippe Breucker
+    Site: http://www.breucker.org
+    Contact: breucker[@]ifris.org
+    From: Gournay, France
+
+/* THANKS */
+
+    Humans.txt: http://humanstxt.org
+
+/* SITE */
+
+    Last update: 2015/03/27
+    Language: French
+    Standards: HTML5, CSS3
+    Doctype: HTML5
+    Software: Silex / Symfony
+    Technology: PHP, Javascript

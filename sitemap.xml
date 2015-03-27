@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//vespa.cortext.net/sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>http://vespa.cortext.net/user/login</loc>
+  <changefreq>weekly</changefreq>
+  <lastmod>2015-03-25T08:48:31Z</lastmod>
+  <priority>1.0</priority>
+  <image:image>
+    <image:loc>http://vespa.cortext.net/images/france_home.png</image:loc>
+    <image:title><![CDATA[Vespa Mining]]></image:title>
+    <image:caption><![CDATA[Vespa Mining]]></image:caption>
+  </image:image>
+</url>
+<url>
+  <loc>http://vespa.cortext.net/user/register</loc>
+  <changefreq>weekly</changefreq>
+  <lastmod>2015-03-25T08:48:31Z</lastmod>
+  <priority>1.0</priority>
+</url>
+<url>
+  <loc>http://vespa.cortext.net/user/forgot-password</loc>
+  <changefreq>weekly</changefreq>
+  <lastmod>2015-03-25T08:48:31Z</lastmod>
+  <priority>0.2</priority>
+</url>
+</urlset>

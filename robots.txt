@@ -1,0 +1,6 @@
+# robots.txt
+# @url: http://vespa.cortext.net
+
+User-agent: *
+
+Sitemap: http://vespa.cortext.net/sitemap.xml
