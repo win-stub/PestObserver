@@ -292,7 +292,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
 
     // Calcul des occurences de la zone
     if ( ! ( is_null( $idDisease ) || $idDisease == "" ) ) {
-        $sql = "SELECT report.id AS Id, plant_disease.Comment AS Text, report.date AS Date
+        $sql = "SELECT report.id AS Id, plant_disease.Comment AS Text, DATE_FORMAT(report.date,'%d/%m/%Y') AS Date
                 FROM report
                 LEFT OUTER JOIN plant_disease ON plant_disease.id_report = report.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
@@ -304,7 +304,7 @@ $app->post('/Services/Vespa.svc/GetAreaDetails', function(Request $request) use 
                 ORDER BY report.date";
         $results = $app['db']->fetchAll($sql, array( $dateStart, $dateStart, $dateEnd, $dateEnd, $idDisease, $idArea, $textLike, $textLike, $idPlant, $idPlant ) );
     } else {
-        $sql = "SELECT report.id AS Id, plant_bioagressor.Comment AS Text, report.date AS Date
+        $sql = "SELECT report.id AS Id, plant_bioagressor.Comment AS Text, DATE_FORMAT(report.date,'%d/%m/%Y') AS Date
                 FROM report
                 LEFT OUTER JOIN plant_bioagressor ON plant_bioagressor.id_report = report.id
                 WHERE ( ? IS NULL OR report.date > STR_TO_DATE( ? , '%d/%m/%Y' ) )
