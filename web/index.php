@@ -9,12 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
+
+// Chargement de la config dans parameters.json
+require_once __DIR__.'/../config/config.php';
     
 // Activation du debugging a desactiver en production
-$app['debug'] = true;
+$app['debug'] = $app['parameters']['debug'];
 $app['stopwatch'] = new Stopwatch();
-
-require_once __DIR__.'/../config/config.php';
 
 $app->before(function ($request) use ($app) {
     $app['stopwatch']->start('vespa');
@@ -35,8 +36,8 @@ $app->register($simpleUserProvider);
 
 // Register Monolog
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.$parameters['monolog']['logfile'],
-    'monolog.name' => $parameters['monolog']['name']
+    'monolog.logfile' => __DIR__.$app['parameters']['monolog']['logfile'],
+    'monolog.name' => $app['parameters']['monolog']['name']
 ));
 
 // Mount the user controller routes:
@@ -619,12 +620,12 @@ $app['swiftmailer.use_spool'] = false;
  *                                                                                           *
  ********************************************************************************************/
 $app['db.options'] = array(
-    'driver'   => $parameters['db.options']['driver'],
-    'host' => $parameters['db.options']['host'],
-    'dbname' => $parameters['db.options']['dbname'],
-    'user' => $parameters['db.options']['user'],
-    'password' => $parameters['db.options']['password'],
-    'charset' => $parameters['db.options']['charset'],
+    'driver'   => $app['parameters']['db.options']['driver'],
+    'host' => $app['parameters']['db.options']['host'],
+    'dbname' => $app['parameters']['db.options']['dbname'],
+    'user' => $app['parameters']['db.options']['user'],
+    'password' => $app['parameters']['db.options']['password'],
+    'charset' => $app['parameters']['db.options']['charset'],
 );
 
 

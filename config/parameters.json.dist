@@ -1,6 +1,7 @@
 {
+    "debug": false,
     "monolog": {
-        "logfile": "/../logs/vespa.log",
+        "logfile": "../logs/vespa.log",
         "name": "Vespa"
     },
     "db.options": {
