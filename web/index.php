@@ -562,6 +562,13 @@ $app['user.options'] = array(
         'tokenTTL' => 86400, // How many seconds the reset token is valid for. Default: 1 day.
     ),
 
+    'editCustomFields' => array(
+        'region' => 'Région d\'affectation',
+        'plantes' => 'Plantes',
+        'maladies' => 'Maladies',
+        'bioagresseurs' => 'Bio-agresseurs',
+    ),
+
 );
 
 /*********************************************************************************************
@@ -612,6 +619,19 @@ $app['security.firewalls'] = array(
  ********************************************************************************************/
 $app['twig.path'] = array(__DIR__.'/../views');
 
+/*********************************************************************************************
+ *                                                                                           *
+ * Définition de la fonction de validation de la complexité du mot de passe.                 *
+ *                                                                                           *
+ ********************************************************************************************/
+$app['user.passwordStrengthValidator'] = $app->protect(function(SimpleUser\User $user, $password) {
+    if (strlen($password) < 4) {
+        return 'Password must be at least 4 characters long.';
+    }
+    if (strtolower($password) == strtolower($user->getName())) {
+        return 'Your password cannot be the same as your name.';
+    }
+});
 
 /*********************************************************************************************
  *                                                                                           *
