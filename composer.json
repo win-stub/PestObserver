@@ -23,6 +23,7 @@
         "silex/silex": "~1.2",
         "jasongrimes/silex-simpleuser": "~2.0",
         "monolog/monolog": "~1.13",
+        "wazaari/monolog-mysql": ">1.0.0",
         "twig/twig": "~1.13,>=1.13.1",
         "doctrine/dbal": "~2.2",
         "symfony/stopwatch": "~2.6"

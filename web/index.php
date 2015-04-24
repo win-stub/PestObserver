@@ -5,6 +5,7 @@ use Silex\Provider;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use MySQLHandler\MySQLHandler;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -655,6 +656,27 @@ $app['db.options'] = array(
     'charset' => $app['parameters']['db.options']['charset'],
 );
 
+/*********************************************************************************************
+ *                                                                                           *
+ * Monolog Mysql PDO                                                                         *
+ *                                                                                           *
+ ********************************************************************************************/
+// Create new logger to MySQL
+$app['mysqlog'] = new \Monolog\Logger('Vespa'); // Define the channel
+$app['mysqlog']->pushHandler(
+   new MySQLHandler(
+     new PDO(
+        'mysql:host='.$app['db.options']['host'].';dbname='.$app['db.options']['dbname'],
+        $app['db.options']['user'],
+        $app['db.options']['password'],
+        array( PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'' )
+     ),
+     "log",
+     // La liste doit correspondre aux champs placés dans les logs dans la fonction finish
+     array('watchpoint','tag','user','session','route','parameters','type','status','response','duration','ip','msg'), 
+     \Monolog\Logger::DEBUG
+   )
+);
 
 /*********************************************************************************************
  *                                                                                           *
@@ -664,20 +686,23 @@ $app['db.options'] = array(
  ********************************************************************************************/
 $app->finish(function ($request, $response) use ($app) {
     // Définition du point de log
-    $ctLog['watchpoint'] = "@".basename(__FILE__).".before.".__LINE__.":";
+    $ctLog['watchpoint'] = "@".basename(__FILE__).".before.".__LINE__;
     $ctLog['tag'] = "CORTEXT-VESPA";
 
     // Log de l'user id si l'utilisateur est loggé, sinon on log 0
     $token=$app['security']->getToken();
     if ( $token !== null ) {
-        $userId = $token->getUser()->getId();
+        try {
+            $userId = $token->getUser()->getId();
+        } catch ( Exception $e ) {
+            $userId = 0;
+        }
     } else {
         $userId = 0;
     }
     $ctLog['user'] = $userId ;
 
     // Log de l'id de session pour mieux suivre les parcours utilisateurs
-    //$msg .= sprintf( "[session:%s] ", $app['session']->getId() );
     $ctLog['session'] = $app['session']->getId();
 
     $ctLog['route'] = $request->getPathInfo();
@@ -702,8 +727,15 @@ $app->finish(function ($request, $response) use ($app) {
 
     $ctLog['msg'] = "";
 
-    // Output de la ligne de log constituée
+    // Output de la ligne de log
     $app['monolog']->addInfo( "[VESPA] ".json_encode( $ctLog, JSON_UNESCAPED_SLASHES ) );
+
+    // Output vers mysql
+    array_walk( $ctLog, function (&$v, $k){
+        // Les objects provoquent une erreur et les array apparaissent comme "array" en bdd, alors on encode tout ça pour les avoir en base
+        if ( in_array( gettype( $v ), array( "object", "array" ), TRUE ) ) $v = json_encode( $v, JSON_UNESCAPED_SLASHES ); 
+    });
+    $app['mysqlog']->addInfo( "[VESPA]", $ctLog );
 });
 
 $app->run();
