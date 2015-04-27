@@ -531,7 +531,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
  *****************************************************************************************/
 $app->get('/files/{path}', function ($path) use ($app) {
     if (!file_exists(__DIR__ . '/reports/' . $path)) {
-        $app->abort(404);
+        $app->abort(404, "Le fichier " . htmlspecialchars($path, ENT_QUOTES, 'UTF-8') . " n'existe pas.");
     }
 
     return $app->sendFile(__DIR__ . '/reports/' . $path);
@@ -725,6 +725,8 @@ $app->finish(function ($request, $response) use ($app) {
         $ctLog['parameters'] = $request->query->all();
     if ( is_null( $ctLog['parameters'] ) || count( $ctLog['parameters'] ) == 0 ) 
         $ctLog['parameters'] = json_decode( $request->getContent(), true );
+    if ( is_null( $ctLog['parameters'] ) || count( $ctLog['parameters'] ) == 0 ) 
+        $ctLog['parameters'] = $request->attributes->get("_route_params");
     if ( ! is_null( $ctLog['parameters'] ) && count( $ctLog['parameters'] ) > 0 )
         array_walk( $ctLog['parameters'], function( &$v, $k ){ if ( in_array( $k, array( "_password", "password", "confirm-password" ), TRUE ) ) $v = ""; });
 
