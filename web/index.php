@@ -580,6 +580,9 @@ $app['user.options'] = array(
         'plantes' => 'Plantes',
         'maladies' => 'Maladies',
         'bioagresseurs' => 'Bio-agresseurs',
+        'institution' => 'Institution',
+        'profession' => 'Profession',
+        'decouverte' => 'Comment avez-vous connu Vespa ?',
     ),
 
 );
