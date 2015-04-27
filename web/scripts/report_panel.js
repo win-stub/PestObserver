@@ -1,6 +1,6 @@
 ﻿
 var report_test_url = "reports\\BSV_GC_n_08_du_22_octobre_2013.pdf";
-var report_dir = "reports/";
+var report_dir = "files/";
 var report_extension = ".pdf";
 
 /***************************************************************************************************************************/

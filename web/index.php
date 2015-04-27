@@ -526,6 +526,19 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
 
 /*****************************************************************************************
  *                                                                                       *
+ * Transfert des documents pdf pour tracer leur telechargement.                          *
+ *                                                                                       *
+ *****************************************************************************************/
+$app->get('/files/{path}', function ($path) use ($app) {
+    if (!file_exists(__DIR__ . '/reports/' . $path)) {
+        $app->abort(404);
+    }
+
+    return $app->sendFile(__DIR__ . '/reports/' . $path);
+});
+
+/*****************************************************************************************
+ *                                                                                       *
  * SimpleUser options. See config reference below for details.                           *
  *                                                                                       *
  *****************************************************************************************/
