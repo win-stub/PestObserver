@@ -50,7 +50,6 @@ $app->mount('/user', $simpleUserProvider);
  *                                                                                       *
  *****************************************************************************************/
 $app->get('/', function(Request $request) use ($app) {
-    //return file_get_contents('header.php').file_get_contents('vespa.php').file_get_contents('footer.php');
     return $app['twig']->render('vespa.twig', array());
 })->bind('vespa');
 
@@ -531,7 +530,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
  *****************************************************************************************/
 $app->get('/files/{path}', function ($path) use ($app) {
     if (!file_exists(__DIR__ . '/reports/' . $path)) {
-        $app->abort(404, "Le fichier " . htmlspecialchars($path, ENT_QUOTES, 'UTF-8') . " n'existe pas.");
+        $app->abort(404, "Le fichier " . $app->escape($path) . " n'existe pas.");
     }
 
     return $app->sendFile(__DIR__ . '/reports/' . $path);
@@ -647,6 +646,7 @@ $app['user.passwordStrengthValidator'] = $app->protect(function(SimpleUser\User 
     }
 });
 
+
 /*********************************************************************************************
  *                                                                                           *
  * Mailer config. See http://silex.sensiolabs.org/doc/providers/swiftmailer.html             *
@@ -654,6 +654,7 @@ $app['user.passwordStrengthValidator'] = $app->protect(function(SimpleUser\User 
  ********************************************************************************************/
 $app['swiftmailer.options'] = array();
 $app['swiftmailer.use_spool'] = false;
+
 
 /*********************************************************************************************
  *                                                                                           *
@@ -668,6 +669,7 @@ $app['db.options'] = array(
     'password' => $app['parameters']['db.options']['password'],
     'charset' => $app['parameters']['db.options']['charset'],
 );
+
 
 /*********************************************************************************************
  *                                                                                           *
