@@ -725,7 +725,7 @@ $app->finish(function ($request, $response) use ($app) {
         $ctLog['parameters'] = $request->query->all();
     if ( is_null( $ctLog['parameters'] ) || count( $ctLog['parameters'] ) == 0 ) 
         $ctLog['parameters'] = json_decode( $request->getContent(), true );
-    if ( ! is_null( $ctLog['parameters'] && count( $ctLog['parameters'] ) ) )
+    if ( ! is_null( $ctLog['parameters'] ) && count( $ctLog['parameters'] ) > 0 )
         array_walk( $ctLog['parameters'], function( &$v, $k ){ if ( in_array( $k, array( "_password", "password", "confirm-password" ), TRUE ) ) $v = ""; });
 
     $ctLog['type'] = $request->getMethod();
