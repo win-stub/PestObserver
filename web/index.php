@@ -392,6 +392,24 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
         $textLike = "%".$searchText."%";
     }
 
+    // Si aucun critère alors message d'erreur
+    if ( is_null($idPlant) && is_null($idBioagressor) && is_null($idDisease) && is_null($textLike) ) {
+        // Construction du tableau retour
+        $response['ErrorMessage'] = "Vous devez choisir au moins un critère parmis : Plante, Bioagresseur, Maladie";
+        $response['ErrorStackTrace'] = null;
+        $response['DateStart'] = null ;
+        $response['DateEnd'] = null ;
+        $response['DiseaseName'] = null ;
+        $response['PlantName'] = null ;
+        $response['BioagressorName'] = null ;
+        $response['Reports'] = null;
+        $response['SearchText'] = null ;
+        $response['Years'] = null;
+
+        // Conversion de la réponse en JSON et retour
+        return $app->json($response);
+    }
+
     // Construction de la requête en fonction des critères de recherche en paramètre
     if ( ! ( is_null( $idBioagressor ) || $idBioagressor == "" ) ) {
         $sql = "SELECT report.id as id, report.date as date, report.datestr as datestring, report.name as name, 
