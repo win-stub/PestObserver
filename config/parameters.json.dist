@@ -12,5 +12,6 @@
         "password": "",
         "charset": "utf8"
     },
-    "analyticsID":""
+    "analyticsID":"",
+    "trustedProxies": []
 }

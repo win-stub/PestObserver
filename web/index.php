@@ -18,6 +18,10 @@ require_once __DIR__.'/../config/config.php';
 $app['debug'] = $app['parameters']['debug'];
 $app['stopwatch'] = new Stopwatch();
 
+// Configuration du proxy
+if ( isset($app['parameters']['trustedProxies']) && count($app['parameters']['trustedProxies']) )
+    Request::setTrustedProxies( $app['parameters']['trustedProxies'] );
+
 $app->before(function ($request) use ($app) {
     $app['stopwatch']->start('vespa');
 }, Application::EARLY_EVENT);
