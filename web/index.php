@@ -733,7 +733,11 @@ $app->finish(function ($request, $response) use ($app) {
     $token=$app['security']->getToken();
     if ( $token !== null ) {
         try {
-            $userId = $token->getUser()->getId();
+            if ( $token->getUser() === "anon." ) {
+                $userId = 0;
+            } else {
+                $userId = $token->getUser()->getId();
+            }
         } catch ( Exception $e ) {
             $userId = 0;
         }
