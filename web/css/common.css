@@ -1,4 +1,4 @@
-﻿/* Z indexes*******************************************
+/* Z indexes*******************************************
     ui-dialog : 1500;
     autocomplete_lists : 1000
     cover_up : 500
@@ -33,9 +33,8 @@ border: none;
 
 body{
     font-family : "OpenSans-Regular";
-	background-color:#FBFBFB;
-	margin-top:0px;
-    margin-bottom:0px;
+    background-color:#FBFBFB;
+    margin:0;
 }
 
 
@@ -872,6 +871,10 @@ rect[class="map_frame"], line[class="map_frame"] {
 	height:69px;
 	background-color:#2B3D4E;
 	border-top:2px solid #EB5554;
+	position:fixed;
+	bottom:0;
+	width:100%;
+	margin:0;
 }
 
 .footer_links {
@@ -928,7 +931,7 @@ rect[class="map_frame"], line[class="map_frame"] {
 	background: url("../images/mailto.png") no-repeat 0px -4px;
 	padding-left:44px;
 	line-height:1.8em;
-	height:60px;
+	height:40px;
 	width:60px;
 	margin-top:18px;
 	float:left;

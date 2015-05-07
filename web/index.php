@@ -545,6 +545,7 @@ $app->post('/Services/Vespa.svc/GetSearchReportList', function(Request $request)
     return $app->json($response);
 });
 
+
 /*****************************************************************************************
  *                                                                                       *
  * Transfert des documents pdf pour tracer leur telechargement.                          *
@@ -557,6 +558,30 @@ $app->get('/files/{path}', function ($path) use ($app) {
 
     return $app->sendFile(__DIR__ . '/reports/' . $path);
 });
+
+
+/*****************************************************************************************
+ *                                                                                       *
+ * Gestion des erreurs 404                                                               *
+ *                                                                                       *
+ *****************************************************************************************/
+
+$app->error(function (\Exception $e, $code) use ($app) {
+
+    // commented for testing purposes
+    /*if ($app['debug']) {
+        return;
+    }*/
+
+    if ($code == 404) {
+
+        return new Response( $app['twig']->render('404.html.twig', array()), 404);
+    }
+
+    return new Response('We are sorry, but something went terribly wrong.', $code);
+
+});
+
 
 /*****************************************************************************************
  *                                                                                       *
