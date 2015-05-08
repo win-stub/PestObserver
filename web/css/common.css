@@ -1135,7 +1135,7 @@ rect[class="map_frame"], line[class="map_frame"] {
 
 /* Integration avec Silex */
 .container {
-    min-height: 580px;
+	padding: 120px 0 90px 0;
 }
 * {
   -webkit-box-sizing: content-box;
