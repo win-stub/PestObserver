@@ -47,6 +47,9 @@ body{
 	height:95px;
 	background-color:#34495E;
 	border-bottom: 1px solid #fff;
+	position: fixed;
+	width: 100%;
+	z-index: 1000;
 }
 
 #home h1{
@@ -88,6 +91,7 @@ body{
 	height:170px;
 	background-color:#526271;
 	border-bottom: 4px solid #fff;
+	padding-top: 100px;
 }
 
 #vespa_search_panel #search_panel{
@@ -696,8 +700,9 @@ div.alt{
 
 #vespa_right_panel #map_container{
 	position:relative;
-    width: 570px; 
-    height: 532px;
+	width: 570px; 
+	height: 532px;
+	z-index: 0;
 }
 
 /* Areas design */
@@ -876,6 +881,7 @@ rect[class="map_frame"], line[class="map_frame"] {
 	bottom:0;
 	width:100%;
 	margin:0;
+	z-index: 1000;
 }
 
 .footer_links {
