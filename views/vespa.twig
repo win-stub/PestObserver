@@ -47,8 +47,12 @@
                                     <li><a href="{{ path('user.list') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
                                 {% endif %}
                                 {% if app.user %}
-                                    <li><a href="{{ path('user') }}"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
+                                   
+				    <li><a href=""><span class=""></span> Contributions</a></li>
+				    <li><a href="http://jobs.inra.fr/infos/mentions/1913"><span class=""></span> Carrières et emlpoi</a></li>
+				     <li><a href="{{ path('user') }}"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
                                     <li><a href="{{ path('user.logout') }}"><span class="glyphicon glyphicon-off"></span> Déconnexion</a></li>
+				   
                                 {% endif %}
                                 </ul>
                             </div>
