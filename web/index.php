@@ -558,6 +558,16 @@ $app->get('/files/{path}', function ($path) use ($app) {
     return $app->sendFile(__DIR__ . '/reports/' . $path);
 });
 
+
+/*****************************************************************************************
+ *                                                                                       *
+ * Page des mentions légales                                                             *
+ *                                                                                       *
+ *****************************************************************************************/
+$app->get('/mentions-legales', function () use ($app) {
+    return $app['twig']->render('mentions.twig', array('layout_template' => 'layout.twig'));
+})->bind('mentions');
+
 /*****************************************************************************************
  *                                                                                       *
  * SimpleUser options. See config reference below for details.                           *
@@ -576,6 +586,7 @@ $app['user.options'] = array(
         'edit' => 'edit.twig',
         'list' => 'list.twig',
         'vespa' => 'vespa.twig',
+        'mentions' => 'mentions.twig',
     ),
 
     // Configure the user mailer for sending password reset and email confirmation messages.
