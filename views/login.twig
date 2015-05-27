@@ -9,6 +9,8 @@
         <p><a href="{{ path('user.logout') }}">Sign out</a></p>
 
     {% else %}
+<div class="row">
+    <div class="col-xs-6">
         <h1>
             Sign in Vespa Mining
         </h1>
@@ -57,10 +59,18 @@
             </div>
 
         </form>
-
+    </div>
+    <div class="col-xs-5">
+        <img src="/images/vespa-small-screenshot.jpg" class="screenshot">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
 	<h2>What is Vespa Mining ?</h2>
 
 	<p class="lead">Vespa is a text mining project to explore bulletins on pest and crops interactions.</p>
+    </div>
+</div>
 
     {% endif %}
 {% endblock %}

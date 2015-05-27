@@ -1154,3 +1154,7 @@ rect[class="map_frame"], line[class="map_frame"] {
   margin: 22px;
   transition: all 0.4s ease;
 }
+.screenshot {
+  padding-top: 20px;
+  width: 100%;
+}
