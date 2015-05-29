@@ -48,8 +48,8 @@
                                 {% endif %}
                                 {% if app.user %}
                                    
-				    <li><a href=""><span class=""></span> Contributions</a></li>
-				    <li><a href="http://jobs.inra.fr/infos/mentions/1913"><span class=""></span> Carrières et emlpoi</a></li>
+				   
+
 				     <li><a href="{{ path('user') }}"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
                                     <li><a href="{{ path('user.logout') }}"><span class="glyphicon glyphicon-off"></span> Déconnexion</a></li>
 				   
@@ -160,11 +160,15 @@
         </div>
         <div id="vespa_footer_panel">
             <div class="footer_links">
-                <a id="DGAL_link" href="http://agriculture.gouv.fr/" target="_blank"><div></div></a>
-                <a id="PIC_link" href="http://www6.inra.fr/reseau-pic" target="_blank"><div>Réseau PIC</div></a>
-                <a id="cortext_link" href="http://cortext.net/" target="_blank"><div></div></a>
+                
+		<a id="PIC_link" href="http://www6.inra.fr/reseau-pic" target="_blank"><div>Réseau PIC</div></a>
+                <a id="PIC_link" href="http://ifris.org/fiche/lisis/" target="_blank"><div>LISIS</div></a>
+		<a id="UPEM_link" href="http://www.u-pem.fr/" target="_blank"><div></div></a>
                 <a id="inra_link" href="http://www.inra.fr/" target="_blank"><div></div></a>
-                <a id="mailto" href="mailto:nturenne.inra@yahoo.fr">Contact</a>
+                <a id="mailto" href="mailto:nturenne.inra@yahoo.fr"><div>Contact</div></a>
+		<a id="mentionslegales" href="{{ path( 'mentions' ) }}"><div>Mentions légales</div></a>
+		<a id="mentionslegales" href="{{ path( 'credit' ) }}"><div> Crédit</div></a>
+
             </div>
         </div>
         <div id="vespa_console_panel">

@@ -570,6 +570,16 @@ $app->get('/mentions-legales', function () use ($app) {
 
 /*****************************************************************************************
  *                                                                                       *
+ * Page des crédits                                                            *
+ *                                                                                       *
+ *****************************************************************************************/
+$app->get('/credit', function () use ($app) {
+    return $app['twig']->render('credit.twig', array('layout_template' => 'layout.twig'));
+})->bind('credit');
+
+
+/*****************************************************************************************
+ *                                                                                       *
  * SimpleUser options. See config reference below for details.                           *
  *                                                                                       *
  *****************************************************************************************/
@@ -587,6 +597,7 @@ $app['user.options'] = array(
         'list' => 'list.twig',
         'vespa' => 'vespa.twig',
         'mentions' => 'mentions.twig',
+	'credit' => 'credit.twig',
     ),
 
     // Configure the user mailer for sending password reset and email confirmation messages.
@@ -615,7 +626,6 @@ $app['user.options'] = array(
         'bioagresseurs' => 'Bio-agresseurs',
         'institution' => 'Institution',
         'profession' => 'Profession',
-        'decouverte' => 'Comment avez-vous connu Vespa ?',
     ),
 
 );

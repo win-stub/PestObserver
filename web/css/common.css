@@ -63,6 +63,14 @@ body{
 	transition: all 0.4s ease;
 }
 
+#home ul{
+	list-style-type:disc;
+}
+
+#home p{
+	text-align:justify;
+}
+
 #bt_home{
 	border-left: 1px solid #fff;
 	border-right:1px solid #fff;
@@ -903,13 +911,6 @@ rect[class="map_frame"], line[class="map_frame"] {
 	margin-top:0px;  
 }
 
-#vespa_footer_panel .footer_links #cortext_link div {
-	background: url("../images/logo_cortext.png") no-repeat;
-	height:30px;
-	width:130px;
-	margin-top:22px;
-	margin-left:-10px;
-}
 
 #vespa_footer_panel .footer_links #inra_link div {
 	background: url("../images/inra_logo.png") no-repeat;
@@ -918,12 +919,14 @@ rect[class="map_frame"], line[class="map_frame"] {
 	margin-top:9px;
 }
 
-#vespa_footer_panel .footer_links #DGAL_link div {
-	background: url("../images/logo_DGAL.png") no-repeat;
+#vespa_footer_panel .footer_links #UPEM_link div {
+	background: url("../images/logo_upem.png") no-repeat;
 	height:60px;
 	width:60px;
 	margin-top:2px;
 }
+
+
 
 #vespa_footer_panel .footer_links #PIC_link div {
 	color:#ffffff;
@@ -932,7 +935,6 @@ rect[class="map_frame"], line[class="map_frame"] {
 	letter-spacing:0.2em;
 	text-shadow: 0px 1px 0px black;
 	height:50px;
-	width:67px;
 	margin-left:-9px;
 	margin-top:15px;
 }
@@ -953,9 +955,22 @@ rect[class="map_frame"], line[class="map_frame"] {
 	text-decoration:none;
 
 }
+
+
 #vespa_footer_panel .footer_links #mailto:hover{
 	background: url("../images/mailto_hover.png") no-repeat 0px -4px;
 	color:#E45454;
+}
+
+#vespa_footer_panel .footer_links #mentionslegales{
+
+	line-height:1.8em;
+	height:40px;
+	margin-top:18px;
+	float:left;
+	color:#ffffff;
+	text-decoration:none;
+
 }
 
 /* Console d'affichage des erreurs   */
