@@ -69,6 +69,8 @@ $app->post('/Services/Vespa.svc/GetInitializationInfos', function() use ($app) {
     $response['ErrorStackTrace'] = null;
     $response['MinDate'] = $res['MinDate'];
     $response['MaxDate'] = $res['MaxDate'];
+    //$response['MinDate'] = $res['02/11/1945'];
+   // $response['MinDate'] = $res['28/07/2011'];
     return $app->json($response);
 });
 
