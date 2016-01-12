@@ -18,7 +18,7 @@ TXTFILES:=$(filter-out $(XMLFILES:.xml=.txt),$(patsubst $(REPORTS_DIR)/%.pdf,$(R
 default: help
 
 help:
-	@echo "Usage: make (index|dico|sql|load-sql|test)"
+	@echo "Usage: make (index|dico|sql|load-sql|download-bsv|copy-bsv|test)"
 
 # Updates the index in R-lib/x.ent/out/output.txt
 index: $(INDEX_OUTPUT_FILE)
@@ -61,6 +61,14 @@ load-sql:
 	    -u$(if $(MYSQL_USER),$(MYSQL_USER),$(error MYSQL_USER is not defined)) \
 	    -p$(if $(MYSQL_PASSWORD),$(MYSQL_PASSWORD),$(error MYSQL_PASSWORD is not defined)) \
 	    $(if $(MYSQL_DB),$(MYSQL_DB),$(error MYSQL_DB is not defined))
+
+download-bsv:
+	cd indexation && \
+	  perl -I Perl Perl/DownloadBSV.pl --to=data/downloadedBSV
+
+copy-bsv:
+	cd indexation && \
+	  perl -I Perl Perl/CopyBSV.pl --from=data/downloadedBSV --to=../web/reports
 
 # Runs tests in indexation/Perl/t
 test:
