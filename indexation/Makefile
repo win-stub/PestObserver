@@ -5,7 +5,7 @@ XENT_HOME:=$(R_LIB_PATH)/x.ent
 
 default: out/output.txt
 
-%.txt: %.pdf
+reportsOCR/%.txt: reports/%.pdf
 	pdf2txt.py -c UTF-8 -o "$@" "$<"
 
 PDFFILES=$(wildcard reports/*.pdf)

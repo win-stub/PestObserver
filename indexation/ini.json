@@ -11,7 +11,7 @@
   "dico": [
     {
       "tag": "p",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-p_v3.txt",
+      "file": "dico-p_v3.txt",
       "node": "true",
       "col_key": "1",
       "col_val": "3..*",
@@ -19,7 +19,7 @@
     },
     {
       "tag": "b",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-b_v3.txt",
+      "file": "dico-b_v3.txt",
       "node": "true",
       "col_key": "1",
       "col_val": "3..*",
@@ -27,7 +27,7 @@
     },
     {
       "tag": "m",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-m_v3.txt",
+      "file": "dico-m_v3.txt",
       "node": "true",
       "col_key": "1",
       "col_val": "3..*",
@@ -35,7 +35,7 @@
     },
     {
       "tag": "a",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-a_v2.txt",
+      "file": "dico-a_v2.txt",
       "node": "true",
       "col_key": "1",
       "col_val": "3..*",
@@ -43,7 +43,7 @@
     },
     {
       "tag": "r",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-r_v1.txt",
+      "file": "dico-r_v1.txt",
       "node": "false",
       "col_key": "5",
       "col_val": "4,6..*",
@@ -51,7 +51,7 @@
     },
     {
       "tag": "f",
-      "file": "/usr/local/lib/R/site-library/x.ent/dico-f_v3.txt",
+      "file": "dico-f_v3.txt",
       "node": "false",
       "col_key": "1",
       "col_val": "2..*",
