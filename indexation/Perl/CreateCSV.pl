@@ -26,7 +26,7 @@ binmode(STDIN, ':utf8');# All output will be UTF-8
 my $json;
 {
   local $/; #Enable 'slurp' mode
-  open my $fh, "<", "./config/vespa.json";
+  open my $fh, "<", "../www/config/ini.json";
   $json = <$fh>;
   close $fh;
 }

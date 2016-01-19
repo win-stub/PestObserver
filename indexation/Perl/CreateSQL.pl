@@ -21,13 +21,10 @@ binmode(STDIN, ':utf8');
 #folder will be store sql files
 my $DIR_SQL = "./data/sql/";
 #path corpus
-my $DIR_CORPUS = "/srv/lisis-lab/web/vespa/reportsOCR";#"/Volumes/Data/reportsOCR";
+my $DIR_CORPUS = "./reportsOCR";
 #path result
-#my $FILE_RESULT = "/Volumes/Data/Code/Java/VESPA/data/out/output.txt";
-my $FILE_RESULT = "/srv/lisis-lab/devroot/home/tien/R/x86_64-pc-linux-gnu-library/3.1/x.ent/out/output.txt";#"/Users/phantrongtien/Desktop/output.txt";#$config->{result}->{file};
-my $path_region = "/srv/lisis-lab/devroot/home/tien/R/x86_64-pc-linux-gnu-library/3.1/x.ent/dico/dico-r_v2.txt";#"/Volumes/Data/Code/Java/VESPA/dico/v3/dico-r_v2.txt";
-#my $path_log = "/Users/phantrongtien/Desktop/log.txt";
-#open(LOGFILE,'>:raw:encoding(UTF8)',$path_log) || die "Can't open this file: $path_log";
+my $FILE_RESULT = "./out/output.txt";
+my $path_region = "./dico/dico-r_v2.txt";
 #my $str_log = '';
 my $node = "false";#if it is true, exist roots and leaves 
 my $col_key = "5";
@@ -53,8 +50,8 @@ for my $name (keys %dico_csv)
 	open(OUTPUT,'>:raw:encoding(UTF8)',$FILE_OUTPUT) || die "Can't open this file: $FILE_OUTPUT";
 	my $data = "";#"Id;Nom\n";
 	$data .= "Delete from $name;\n";
-    $data .= "Insert into $name(Id,Name) values ('0','');\n";#value empty
-    for my $key_nom (keys %dico_data)
+	$data .= "Insert into $name(Id,Name) values ('0','');\n";#value empty
+	for my $key_nom (keys %dico_data)
 	{
 		my $id = $dico_data{$key_nom};
 		$key_nom =~ s/'/''/g;
@@ -178,7 +175,7 @@ foreach my $fp (glob("$DIR_CORPUS/*.{txt,xml}"))
 			{
 				$id_region = $dico_area{$nom};	
 			}
-			
+
 		}	
 	}
 	#check and correct date if it is incorrect
@@ -187,79 +184,79 @@ foreach my $fp (glob("$DIR_CORPUS/*.{txt,xml}"))
 		#12.09.1961
 		my $temp_date = $date[0];
 		if($temp_date =~ m/(\d{2})\.(\d{1,2})\.(\d{1,4})/g)
-	    {
-	        my $year = $3;
-	        my $month = $2;
-	        my $day = $1;	
-	        my $date_correct = $year."-".$month."-".$day;
-	        my $date_str = $day.".".$month.".".$year;
-	        if(length($year) < 4)
-	        {
-	        	if(length($year) == 2)
-		        {
-		        	if($year > 0 && $year < $year_sys)
-		        	{
-		        		$year += 2000;
-		        		($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
-		        		$date_correct = $year."-".$month."-".$day;
-		        		$date_str = $day.".".$month.".".$year;
-		        		#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";
-		        	}
-		        	else
-		        	{
-		        		#get date from the name of path
-		        		($date_correct,$date_str)  =  Modules::Entite::GetOneDate($f_name);
-	        			#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";
-		        	}
-		        }
-		        else
-		        {
-		        	($date_correct,$date_str)  =  Modules::Entite::GetOneDate($f_name);
-	        		#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";	
-		        }
-	        }
-	        else #check date validatation 
-	        {
-	        	($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
-            	$date_correct = $year."-".$month."-".$day;		
-            	$date_str = $day.".".$month.".".$year;
-	        }
-	        $sql .= "Insert Into report(Id,Name,Date,Datestr,Id_Area,Content) values ('".$id."','".$f_name."','".$date_correct."','".$date_str."','".$id_region."','".$text."');\n";
-	    }
-	    elsif($temp_date =~ m/(\d{1,2})\.(\d{1,4})/g)#04.1962
-	    {
-		    my $year = $2;
-		    my $month = $1;
-		    my $day = "01";
-		    my $date_correct = $year."-".$month."-".$day;
-		    my $date_str = $day.".".$month.".".$year;
-	        if(length($year) < 4)
-	        {
-	        	if(length($year) == 2)
-		        {
-		        	if($year > 0 && $year < $year_sys)
-		        	{
-		        		$year += 2000;
-		        		($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
-		        		$date_correct = $year."-".$month."-".$day;
-		        		$date_str = $day.".".$month.".".$year;
-		        		#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";
-		        	}
-		        	else
-		        	{
-		        		#get date from the name of path
-		        		($date_correct,$date_str) =  Modules::Entite::GetOneDate($f_name);
-	        			#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";
-		        	}
-		        }
-		        else
-		        {
-		        	($date_correct,$date_str) =  Modules::Entite::GetOneDate($f_name);
-	        		#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";	
-		        }
-	        }
-		    $sql .= "Insert Into report(Id,Name,Date,Datestr,Id_Area,Content) values ('".$id."','".$f_name."','".$date_correct."','".$date_str."','".$id_region."','".$text."');\n";
-	    }
+		{
+			my $year = $3;
+			my $month = $2;
+			my $day = $1;	
+			my $date_correct = $year."-".$month."-".$day;
+			my $date_str = $day.".".$month.".".$year;
+			if(length($year) < 4)
+			{
+				if(length($year) == 2)
+				{
+					if($year > 0 && $year < $year_sys)
+					{
+						$year += 2000;
+						($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
+						$date_correct = $year."-".$month."-".$day;
+						$date_str = $day.".".$month.".".$year;
+						#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";
+					}
+					else
+					{
+						#get date from the name of path
+						($date_correct,$date_str)  =  Modules::Entite::GetOneDate($f_name);
+						#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";
+					}
+				}
+				else
+				{
+					($date_correct,$date_str)  =  Modules::Entite::GetOneDate($f_name);
+					#print $f_name."-current-".$temp_date."-current-".$date_correct."\n";	
+				}
+			}
+			else #check date validatation 
+			{
+				($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
+				$date_correct = $year."-".$month."-".$day;		
+				$date_str = $day.".".$month.".".$year;
+			}
+			$sql .= "Insert Into report(Id,Name,Date,Datestr,Id_Area,Content) values ('".$id."','".$f_name."','".$date_correct."','".$date_str."','".$id_region."','".$text."');\n";
+		}
+		elsif($temp_date =~ m/(\d{1,2})\.(\d{1,4})/g)#04.1962
+		{
+			my $year = $2;
+			my $month = $1;
+			my $day = "01";
+			my $date_correct = $year."-".$month."-".$day;
+			my $date_str = $day.".".$month.".".$year;
+			if(length($year) < 4)
+			{
+				if(length($year) == 2)
+				{
+					if($year > 0 && $year < $year_sys)
+					{
+						$year += 2000;
+						($year,$month,$day) = Modules::Utils::CheckDate($year,$month,$day);
+						$date_correct = $year."-".$month."-".$day;
+						$date_str = $day.".".$month.".".$year;
+						#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";
+					}
+					else
+					{
+						#get date from the name of path
+						($date_correct,$date_str) =  Modules::Entite::GetOneDate($f_name);
+						#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";
+					}
+				}
+				else
+				{
+					($date_correct,$date_str) =  Modules::Entite::GetOneDate($f_name);
+					#print $f_name."-current-".$temp_date."-correct-".$date_correct."\n";	
+				}
+			}
+			$sql .= "Insert Into report(Id,Name,Date,Datestr,Id_Area,Content) values ('".$id."','".$f_name."','".$date_correct."','".$date_str."','".$id_region."','".$text."');\n";
+		}
 	}
 	else
 	{
@@ -275,7 +272,7 @@ foreach my $fp (glob("$DIR_CORPUS/*.{txt,xml}"))
 		#print $f_name."-correct-".$date_correct."\n";
 		$sql .= "Insert Into report(Id,Name,Date,Datestr,Id_Area,Content) values ('".$id."','".$f_name."','".$date_correct."','".$date_str."','".$id_region."','".$text."');\n";	
 	}
-    #save to csv file
+	#save to csv file
 	if(scalar(@date) > 0)
 	{
 		$data .= $id.";".$f_name.";".$date[0].";".$id_region.";".$text."\n";

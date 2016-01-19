@@ -14,10 +14,12 @@ RUN cd /opt \
  && (cd Unitex3.0/Src/C++/build && make install) \
  && rm Unitex3.0.zip
 
-COPY ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
-COPY *.pl /usr/local/lib/R/site-library/x.ent/Perl/
-
 RUN mkdir /work
+
+COPY Makefile /work
+COPY ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
+COPY Perl /usr/local/lib/R/site-library/x.ent/Perl
+
 WORKDIR /work
 
 CMD ["make"]
