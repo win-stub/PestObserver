@@ -16,7 +16,7 @@ RUN cd /opt \
 
 RUN mkdir /work
 
-COPY Makefile /work
+COPY Makefile /work/
 COPY ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
 
 WORKDIR /work
