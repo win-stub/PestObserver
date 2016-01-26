@@ -13,10 +13,14 @@ TXTFILES=$(patsubst reports/%.pdf,reportsOCR/%.txt,$(PDFFILES))
 
 dico:
 	mkdir -p data/csv_temp \
-	&& perl -I $(XENT_HOME)/Perl $(XENT_HOME)/Perl/CreateCSV.pl
+	&& perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateCSV.pl
 
 sql:
-	perl -I $(XENT_HOME)/Perl $(XENT_HOME)/Perl/CreateSQL.pl
+	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateSQL.pl
+
+clean-sql:
+	rm -f ./data/sql/* \
+	&& rm -f ./data/csv/Report.csv
 
 out/output.txt: $(TXTFILES)
 	R -e 'library("x.ent"); xparse()'

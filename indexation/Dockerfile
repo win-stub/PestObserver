@@ -18,7 +18,6 @@ RUN mkdir /work
 
 COPY Makefile /work
 COPY ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
-COPY Perl /usr/local/lib/R/site-library/x.ent/Perl
 
 WORKDIR /work
 

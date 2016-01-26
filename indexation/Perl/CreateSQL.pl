@@ -20,11 +20,12 @@ binmode(STDIN, ':utf8');
 
 #folder will be store sql files
 my $DIR_SQL = "./data/sql/";
+my $DIR_DICO = "./data/dicos";
 #path corpus
 my $DIR_CORPUS = "./reportsOCR";
 #path result
 my $FILE_RESULT = "./out/output.txt";
-my $path_region = "./dico/dico-r_v2.txt";
+my $path_region = $DIR_DICO."/dico-r_v3.txt";
 #my $str_log = '';
 my $node = "false";#if it is true, exist roots and leaves 
 my $col_key = "5";
@@ -37,10 +38,10 @@ my %data_result = Modules::Evaluation::LoadFile($FILE_RESULT);
 #Load dictionaries that you ran CreateCSV.pl
 #using a hash to store name of tables (the same name of table in BDD) and path of csv files
 my %dico_csv;
-$dico_csv{"area"} = "./data/csv/dico-r_v2.csv";#change here if necessary
-$dico_csv{"plant"} = "./data/csv/dico-p_v3.csv";#change here if necessary
-$dico_csv{"disease"} = "./data/csv/dico-m_v3.csv";#change here if necessary
-$dico_csv{"bioagressor"} = "./data/csv/dico-b_v3.csv";#change here if necessary
+$dico_csv{"area"} =        $DIR_DICO."/dico-r_v3.csv";#change here if necessary
+$dico_csv{"plant"} =       $DIR_DICO."/dico-p_v3.csv";#change here if necessary
+$dico_csv{"disease"} =     $DIR_DICO."/dico-m_v3.csv";#change here if necessary
+$dico_csv{"bioagressor"} = $DIR_DICO."/dico-b_v3.csv";#change here if necessary
 #créer la table unique (Id,Nom)
 for my $name (keys %dico_csv)
 {
