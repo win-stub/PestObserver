@@ -1,4 +1,4 @@
-.PHONY : default dico
+.PHONY : default dico sql clean-sql
 
 R_LIB_PATH=$(shell R --slave -e "cat(.libPaths()[1])")
 XENT_HOME:=$(R_LIB_PATH)/x.ent
@@ -12,8 +12,7 @@ PDFFILES=$(wildcard reports/*.pdf)
 TXTFILES=$(patsubst reports/%.pdf,reportsOCR/%.txt,$(PDFFILES))
 
 dico:
-	mkdir -p data/csv_temp \
-	&& perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateCSV.pl
+	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateCSV.pl $(XENT_HOME)
 
 sql:
 	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateSQL.pl

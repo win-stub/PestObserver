@@ -175,8 +175,8 @@ sub CheckConfict
 		my %tag_unitex = %{$_[3]};
 		#Modules::Utils::PrintHash(%tag_dico);
 		#couper chaque phrase
-		my @line_curr_data = split(/\.{S}/,$curr_data);
-		my @line_old_data = split(/\.{S}/,$old_data);
+		my @line_curr_data = split(/\.\{S}/,$curr_data);
+		my @line_old_data = split(/\.\{S}/,$old_data);
 		#print scalar(@line_curr_data)."\t".scalar(@line_old_data)."\n";
 		my $total_line = (scalar(@line_curr_data) > scalar(@line_old_data))?scalar(@line_old_data):scalar(@line_curr_data);
 		for(my $n_line = 0; $n_line<$total_line;$n_line++)
@@ -267,8 +267,8 @@ sub CheckConclictTag
 {
 	my ($curr_data,$old_data,$tag) = @_;
 	#couper chaque phrase
-	my @line_curr_data = split(/\.{S}/,$curr_data);
-	my @line_old_data = split(/\.{S}/,$old_data);
+	my @line_curr_data = split(/\.\{S}/,$curr_data);
+	my @line_old_data = split(/\.\{S}/,$old_data);
 	my $result = "";
 	my $total_line = (scalar(@line_curr_data) > scalar(@line_old_data))?scalar(@line_old_data):scalar(@line_curr_data);
 	for(my $n_line = 0; $n_line<$total_line;$n_line++)
