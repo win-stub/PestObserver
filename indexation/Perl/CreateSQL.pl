@@ -10,6 +10,7 @@ use Modules::Relation;
 use Modules::Structure;
 use Modules::Evaluation;
 use Modules::Parametre;
+use File::Path qw(make_path);
 
 # All output and input will be UTF-8
 use utf8;
@@ -18,14 +19,20 @@ binmode(STDERR, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDIN, ':utf8');
 
-#folder will be store sql files
+#folders will be store data files
 my $DIR_SQL = "./data/sql/";
-my $DIR_DICO = "./data/dicos";
+my $DIR_DICO = "./data/dicos/";
+my $DIR_CSV = "./data/csv/";
+
+# Garanty that output folders are present
+make_path($DIR_SQL);
+make_path($DIR_CSV);
+
 #path corpus
 my $DIR_CORPUS = "./reportsOCR";
 #path result
 my $FILE_RESULT = "./out/output.txt";
-my $path_region = $DIR_DICO."/dico-r_v3.txt";
+my $path_region = $DIR_DICO."dico-r_v3.txt";
 #my $str_log = '';
 my $node = "false";#if it is true, exist roots and leaves 
 my $col_key = "5";
@@ -38,10 +45,10 @@ my %data_result = Modules::Evaluation::LoadFile($FILE_RESULT);
 #Load dictionaries that you ran CreateCSV.pl
 #using a hash to store name of tables (the same name of table in BDD) and path of csv files
 my %dico_csv;
-$dico_csv{"area"} =        $DIR_DICO."/dico-r_v3.csv";#change here if necessary
-$dico_csv{"plant"} =       $DIR_DICO."/dico-p_v3.csv";#change here if necessary
-$dico_csv{"disease"} =     $DIR_DICO."/dico-m_v3.csv";#change here if necessary
-$dico_csv{"bioagressor"} = $DIR_DICO."/dico-b_v3.csv";#change here if necessary
+$dico_csv{"area"} =        $DIR_DICO."dico-r_v3.csv";#change here if necessary
+$dico_csv{"plant"} =       $DIR_DICO."dico-p_v3.csv";#change here if necessary
+$dico_csv{"disease"} =     $DIR_DICO."dico-m_v3.csv";#change here if necessary
+$dico_csv{"bioagressor"} = $DIR_DICO."dico-b_v3.csv";#change here if necessary
 #créer la table unique (Id,Nom)
 for my $name (keys %dico_csv)
 {
@@ -71,7 +78,7 @@ my %dico_bioagressor = Modules::Dico::LoadDicoCSV($dico_csv{"bioagressor"});
 my %dico_area = Modules::Dico::LoadDicoCSV($dico_csv{"area"});
 
 #Create Report.csv and Report.sql from the corpus and the output.txt file
-my $FILE_REPORT_CSV = "./data/csv/Report.csv";
+my $FILE_REPORT_CSV = $DIR_CSV."Report.csv";
 my $FILE_REPORT_SQL = $DIR_SQL."report.sql";
 open(OUTPUT_CSV,'>:raw:encoding(UTF8)',$FILE_REPORT_CSV) || die "Can't open this file: $FILE_REPORT_CSV";
 open(OUTPUT_SQL,'>:raw:encoding(UTF8)',$FILE_REPORT_SQL) || die "Can't open this file: $FILE_REPORT_SQL";
