@@ -17,4 +17,11 @@ sub Load
   decode_json($json);
 }
 
+sub MapDicoToTag
+{
+  my ($array) = @_;
+  my %dicoMap = map { $_->{"tag"} => $_ } @$array;
+  return \%dicoMap;
+}
+
 1;

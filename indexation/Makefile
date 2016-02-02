@@ -13,9 +13,11 @@ TXTFILES=$(patsubst reports/%.pdf,reportsOCR/%.txt,$(PDFFILES))
 
 dico:
 	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateCSV.pl $(XENT_HOME)
+	mkdir -p $(XENT_HOME)/Perl/data/csv
+	cp -v $(XENT_HOME)/Perl/data/csv_temp/* $(XENT_HOME)/Perl/data/csv
 
 sql:
-	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateSQL.pl
+	perl -I ./Perl -I $(XENT_HOME)/Perl ./Perl/CreateSQL.pl "$(XENT_HOME)"
 
 clean-sql:
 	rm -f ./data/sql/* \

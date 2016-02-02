@@ -3,6 +3,7 @@
 #Created date: 20/03/2014													  #
 ###############################################################################
 #use modules defined
+use JSON;
 use Modules::Dico;
 use Modules::Utils;
 use Modules::Entite;
@@ -10,7 +11,10 @@ use Modules::Relation;
 use Modules::Structure;
 use Modules::Evaluation;
 use Modules::Parametre;
+use Modules::Config;
 use File::Path qw(make_path);
+use File::Basename;
+use File::Spec;
 
 # All output and input will be UTF-8
 use utf8;
@@ -19,21 +23,30 @@ binmode(STDERR, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDIN, ':utf8');
 
-#folders will be store data files
-my $DIR_SQL = "./data/sql/";
-my $DIR_DICO = "./data/dicos/";
-my $DIR_CSV = "./data/csv/";
+$num_args = $#ARGV + 1;
+if ($num_args != 1) {
+    print "\nMissing argument : give the x.ent path\n";
+    exit;
+}
 
-# Garanty that output folders are present
+my $XENT_HOME = $ARGV[0];
+my $xentconfig = Modules::Config::Load($XENT_HOME);
+
+$dicos = Modules::Config::MapDicoToTag($xentconfig->{dico});
+
+# Output data folders
+my $DIR_SQL = "./data/sql";
+my $DIR_CSV = "./data/csv";
+
+# Ensure that output folders are present
 make_path($DIR_SQL);
 make_path($DIR_CSV);
 
 #path corpus
-my $DIR_CORPUS = "./reportsOCR";
+my $DIR_CORPUS = $xentconfig->{corpus}->{dir};
 #path result
-my $FILE_RESULT = "./out/output.txt";
-my $path_region = $DIR_DICO."dico-r_v3.txt";
-#my $str_log = '';
+my $FILE_RESULT = $xentconfig->{result}->{file};
+my $path_region = File::Spec->catfile($XENT_HOME, "dico", $dicos->{r}->{file});    # dico-r_v3.txt";
 my $node = "false";#if it is true, exist roots and leaves 
 my $col_key = "5";
 my $col_val = "4..*";
@@ -45,16 +58,17 @@ my %data_result = Modules::Evaluation::LoadFile($FILE_RESULT);
 #Load dictionaries that you ran CreateCSV.pl
 #using a hash to store name of tables (the same name of table in BDD) and path of csv files
 my %dico_csv;
-$dico_csv{"area"} =        $DIR_DICO."dico-r_v3.csv";#change here if necessary
-$dico_csv{"plant"} =       $DIR_DICO."dico-p_v3.csv";#change here if necessary
-$dico_csv{"disease"} =     $DIR_DICO."dico-m_v3.csv";#change here if necessary
-$dico_csv{"bioagressor"} = $DIR_DICO."dico-b_v3.csv";#change here if necessary
-#créer la table unique (Id,Nom)
-for my $name (keys %dico_csv)
-{
+my %dico_names = (
+  "r" => "area",
+  "p" => "plant",
+  "m" => "disease",
+  "b" => "bioagressor",
+);
+while (($tag, $name) = each %dico_names) {
+        $dico_csv{$name} = File::Spec->catfile($XENT_HOME, "Perl/data/csv", fileparse($dicos->{$tag}->{file}, ".txt").".csv");
 	my $f_name = $dico_csv{$name};
 	my %dico_data = Modules::Dico::LoadDicoCSV($f_name);
-	my $FILE_OUTPUT = $DIR_SQL.$name.".sql";
+	my $FILE_OUTPUT = File::Spec->catfile($DIR_SQL, $name.".sql");
 	open(OUTPUT,'>:raw:encoding(UTF8)',$FILE_OUTPUT) || die "Can't open this file: $FILE_OUTPUT";
 	my $data = "";#"Id;Nom\n";
 	$data .= "Delete from $name;\n";
@@ -72,14 +86,14 @@ for my $name (keys %dico_csv)
 	close(OUTPUT);
 }
 
+my %dico_area = Modules::Dico::LoadDicoCSV($dico_csv{"area"});
 my %dico_plant = Modules::Dico::LoadDicoCSV($dico_csv{"plant"});
 my %dico_disease = Modules::Dico::LoadDicoCSV($dico_csv{"disease"});
 my %dico_bioagressor = Modules::Dico::LoadDicoCSV($dico_csv{"bioagressor"});
-my %dico_area = Modules::Dico::LoadDicoCSV($dico_csv{"area"});
 
 #Create Report.csv and Report.sql from the corpus and the output.txt file
-my $FILE_REPORT_CSV = $DIR_CSV."Report.csv";
-my $FILE_REPORT_SQL = $DIR_SQL."report.sql";
+my $FILE_REPORT_CSV = File::Spec->catfile($DIR_CSV, "Report.csv");
+my $FILE_REPORT_SQL = File::Spec->catfile($DIR_SQL, "report.sql");
 open(OUTPUT_CSV,'>:raw:encoding(UTF8)',$FILE_REPORT_CSV) || die "Can't open this file: $FILE_REPORT_CSV";
 open(OUTPUT_SQL,'>:raw:encoding(UTF8)',$FILE_REPORT_SQL) || die "Can't open this file: $FILE_REPORT_SQL";
 
@@ -303,13 +317,13 @@ my %dico_report = Modules::Dico::LoadDicoCSV($FILE_REPORT_CSV);
 
 #créer la table rélation
 #table Plant_Disease_Nuisibilité (Id,Id_Report,Id_Plant, Id_Disease, Comment)
-my $FILE_OUTPUT2 = $DIR_SQL."plant_disease.sql";
+my $FILE_OUTPUT2 = File::Spec->catfile($DIR_SQL, "plant_disease.sql");
 open(OUTPUT2,'>:raw:encoding(UTF8)',$FILE_OUTPUT2) || die "Can't open this file: $FILE_OUTPUT2";
 my $data2 = "Delete from plant_disease;\n";
 my $id2 = 0;
 #créer la table rélation
 #table Plant_Bioagresseur_Nuisibilité (Id,Id_Report,Id_Plant, Id_Bioagresor, Comment)
-my $FILE_OUTPUT3 = $DIR_SQL."plant_bioagressor.sql";
+my $FILE_OUTPUT3 = File::Spec->catfile($DIR_SQL, "plant_bioagressor.sql");
 open(OUTPUT3,'>:raw:encoding(UTF8)',$FILE_OUTPUT3) || die "Can't open this file: $FILE_OUTPUT3";
 my $data3 = "Delete from plant_bioagressor;\n";
 my $id3 = 0;
