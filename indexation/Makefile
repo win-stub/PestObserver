@@ -1,4 +1,4 @@
-.PHONY : default dico sql clean-sql
+.PHONY : default dico sql clean-sql test
 
 R_LIB_PATH=$(shell R --slave -e "cat(.libPaths()[1])")
 XENT_HOME:=$(R_LIB_PATH)/x.ent
@@ -23,3 +23,6 @@ clean-sql:
 
 out/output.txt: $(TXTFILES)
 	R -e 'library("x.ent"); xparse()'
+
+test:
+	perl -I ./Perl -MTest::Harness -e "runtests(glob('./Perl/t/*.t'))"
