@@ -27,4 +27,4 @@ out/output.txt: $(TXTFILES)
 	R -e 'library("x.ent"); xparse()'
 
 test:
-	perl -I ./Perl -MTest::Harness -e "runtests(glob('./Perl/t/*.t'))"
+	perl -I ./Perl -I $(XENT_HOME)/Perl -MTest::Harness -e "runtests(glob('./Perl/t/*.t'))"

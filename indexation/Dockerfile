@@ -6,13 +6,16 @@ RUN apt-get update \
 
 RUN pip install pdfminer
 
-RUN R -e "install.packages('x.ent')"
-
 RUN cd /opt \
  && wget --quiet http://igm.univ-mlv.fr/~unitex/Unitex3.0.zip \
  && unzip Unitex3.0.zip \
  && (cd Unitex3.0/Src/C++/build && make install) \
  && rm Unitex3.0.zip
+
+RUN R -e "install.packages('devtools')"
+
+# RUN R -e "library('devtools'); install_github('win-stub/x.ent')"
+RUN R -e "library('devtools'); install_github('ut7/x.ent', ref='d376ee5')"
 
 RUN mkdir /work
 
