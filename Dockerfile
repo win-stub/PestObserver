@@ -17,12 +17,10 @@ RUN R -e "install.packages('devtools')"
 # RUN R -e "library('devtools'); install_github('win-stub/x.ent')"
 RUN R -e "library('devtools'); install_github('ut7/x.ent', ref='d376ee5')"
 
-RUN mkdir /work
+COPY . /vespa
 
-COPY Makefile /work/
-COPY ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
-COPY Perl /work/Perl
+COPY indexation/ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
 
-WORKDIR /work
+WORKDIR /vespa
 
 CMD ["make"]

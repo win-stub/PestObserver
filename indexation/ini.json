@@ -1,12 +1,12 @@
 {
   "corpus": {
-    "dir": "/work/reportsOCR"
+    "dir": "/vespa/reportsOCR"
   },
   "eval": {
     "file": ""
   },
   "result": {
-    "file": "/work/out/output.txt"
+    "file": "/usr/local/lib/R/site-library/x.ent/out/output.txt"
   },
   "dico": [
     {

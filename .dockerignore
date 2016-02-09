@@ -1,0 +1,6 @@
+indexation/data
+indexation/draaf.*
+logs
+reports*
+vendor
+web/reports*
