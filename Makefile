@@ -1,4 +1,4 @@
-.PHONY : default dico sql clean-sql test
+.PHONY : default dico index sql test
 
 R_LIBS_USER=$(abspath R-lib)
 export R_LIBS_USER
@@ -15,12 +15,14 @@ PDFFILES:=$(wildcard $(REPORTS_DIR)/*.pdf)
 XMLFILES:=$(wildcard $(REPORTS_OCR_DIR)/*.xml)
 TXTFILES:=$(filter-out $(XMLFILES:.xml=.txt),$(patsubst $(REPORTS_DIR)/%.pdf,$(REPORTS_OCR_DIR)/%.txt,$(PDFFILES)))
 
-default: $(INDEX_OUTPUT_FILE)
+default: sql
+
+index: $(INDEX_OUTPUT_FILE)
 
 $(INDEX_OUTPUT_FILE): $(TXTFILES) $(XMLFILES)
 	@mkdir -p $(INDEX_OUTPUT_DIR)
 	rm -f $(INDEX_OUTPUT_FILE)
-	Rscript -e 'x.ent::xparse()'
+	Rscript -e 'x.ent::xparse(verbose=TRUE)'
 
 $(REPORTS_OCR_DIR)/%.txt: $(REPORTS_DIR)/%.pdf
 	@mkdir -p $(REPORTS_OCR_DIR)
@@ -32,7 +34,7 @@ dico:
 	  mkdir -p $(XENT_DATA_DIR)/csv && \
 	  cp -v $(XENT_DATA_DIR)/csv_temp/* $(XENT_DATA_DIR)/csv
 
-sql:
+sql: dico index
 	cd indexation && \
 	  rm -f data/sql/* data/csv/Report.csv && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateSQL.pl $(XENT_HOME)
