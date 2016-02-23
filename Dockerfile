@@ -29,7 +29,7 @@ RUN Rscript -e "install.packages(c('devtools', 'brew', 'colorspace', \
 COPY install_x.ent.sh /vespa/
 COPY indexation/ini.json.dist /vespa/indexation/
 
-RUN ./install_x.ent.sh
+RUN ./install_x.ent.sh && rm -rf R-lib/x.ent/out
 
 COPY . /vespa
 
