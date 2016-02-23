@@ -12,15 +12,25 @@ RUN cd /opt \
  && (cd Unitex3.0/Src/C++/build && make install) \
  && rm Unitex3.0.zip
 
-RUN R -e "install.packages('devtools')"
+ENV UNITEX_HOME=/opt/Unitex3.0
 
-# RUN R -e "library('devtools'); install_github('win-stub/x.ent')"
-RUN R -e "library('devtools'); install_github('ut7/x.ent', ref='d376ee5')"
-
-COPY . /vespa
-
-COPY indexation/ini.json /usr/local/lib/R/site-library/x.ent/www/config/ini.json
+RUN mkdir -p /vespa/R-lib
+ENV R_LIBS_USER=/vespa/R-lib
 
 WORKDIR /vespa
+
+# Les packages dont dépend x.ent, qui ne devraient pas trop bouger
+RUN Rscript -e "install.packages(c('devtools', 'brew', 'colorspace', \
+  'dichromat', 'evaluate', 'formatR', 'ggplot2', 'gtable', 'highr', \
+  'httpuv', 'knitr', 'labeling', 'markdown', 'munsell', 'opencpu', \
+  'plyr', 'RColorBrewer', 'Rcpp', 'reshape2', 'rJava', 'scales', \
+  'statmod', 'venneuler', 'xtable', 'yaml'))"
+
+COPY install_x.ent.sh /vespa/
+COPY indexation/ini.json.dist /vespa/indexation/
+
+RUN ./install_x.ent.sh
+
+COPY . /vespa
 
 CMD ["make"]

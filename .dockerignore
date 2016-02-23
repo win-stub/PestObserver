@@ -1,6 +1,9 @@
+.git
 indexation/data
 indexation/draaf.*
 logs
+R-lib
 reports*
+sql/vespa_data.sql
 vendor
 web/reports*

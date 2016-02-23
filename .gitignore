@@ -1,6 +1,7 @@
 /composer.lock
 /config/parameters.json
 /logs/
+/R-lib/
 /reportsOCR/*.txt
 /reportsOCR/*.xml
 /vendor/

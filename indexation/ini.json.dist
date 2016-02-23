@@ -1,12 +1,12 @@
 {
   "corpus": {
-    "dir": "/vespa/reportsOCR"
+    "dir": "%VESPA_HOME%/reportsOCR"
   },
   "eval": {
-    "file": ""
+    "file": "%VESPA_HOME%/R-lib/x.ent/eval/eval.txt"
   },
   "result": {
-    "file": "/usr/local/lib/R/site-library/x.ent/out/output.txt"
+    "file": "%VESPA_HOME%/R-lib/x.ent/out/output.txt"
   },
   "dico": [
     {
@@ -60,14 +60,14 @@
   ],
   "unitex": {
     "system": {
-      "tool_unitex": "/opt/Unitex3.0/App/UnitexToolLogger",
-      "main_graph": "/usr/local/lib/R/site-library/x.ent/Unitex/graphs/VESPA.grf",
-      "my_unitex": "/opt/Unitex3.0/French",
+      "tool_unitex": "%UNITEX_HOME%/App/UnitexToolLogger",
+      "main_graph": "%VESPA_HOME%/R-lib/x.ent/Unitex/graphs/VESPA.grf",
+      "my_unitex": "%UNITEX_HOME%/French",
       "dico": [
-        "/opt/Unitex3.0/French/Dela/dela-fr-public.bin",
-        "/usr/local/lib/R/site-library/x.ent/Unitex/dicos/Delaf_Communes_France_FR_utf8.bin",
-        "/usr/local/lib/R/site-library/x.ent/Unitex/dicos/Delaf_Toponyme_Departement_France_FR_utf8.bin",
-        "/usr/local/lib/R/site-library/x.ent/Unitex/dicos/Delaf_Toponyme_Region_France_FR_utf8.bin"
+        "%UNITEX_HOME%/French/Dela/dela-fr-public.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Communes_France_FR_utf8.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Toponyme_Departement_France_FR_utf8.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Toponyme_Region_France_FR_utf8.bin"
       ]
     },
     "result": [
