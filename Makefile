@@ -32,12 +32,23 @@ dico:
 	cd indexation && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateCSV.pl $(XENT_HOME) && \
 	  mkdir -p $(XENT_DATA_DIR)/csv && \
-	  cp -v $(XENT_DATA_DIR)/csv_temp/* $(XENT_DATA_DIR)/csv
+	  mv -v $(XENT_DATA_DIR)/csv_temp/* $(XENT_DATA_DIR)/csv
 
-sql: dico index
+sql:
 	cd indexation && \
 	  rm -f data/sql/* data/csv/Report.csv && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateSQL.pl $(XENT_HOME)
+
+load-sql:
+	cd indexation/data/sql && \
+	  for f in plant area disease report plant_bioagressor plant_disease; do \
+	    >&2 echo $$f; \
+	    awk '{if(NR % 100 == 1) { printf "." > "/dev/stderr" }; print}' $$f.sql; \
+	    >&2 echo; \
+	  done | mysql -h$(if $(MYSQL_HOST),$(MYSQL_HOST),$(error MYSQL_HOST is not defined)) \
+	    -u$(if $(MYSQL_USER),$(MYSQL_USER),$(error MYSQL_USER is not defined)) \
+	    -p$(if $(MYSQL_PASSWORD),$(MYSQL_PASSWORD),$(error MYSQL_PASSWORD is not defined)) \
+	    $(if $(MYSQL_DB),$(MYSQL_DB),$(error MYSQL_DB is not defined))
 
 test:
 	cd indexation && \
