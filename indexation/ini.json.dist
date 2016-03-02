@@ -43,7 +43,7 @@
     },
     {
       "tag": "r",
-      "file": "dico-r_v1.txt",
+      "file": "dico-r_v2.txt",
       "node": "false",
       "col_key": "5",
       "col_val": "4,6..*",
