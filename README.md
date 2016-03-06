@@ -26,6 +26,8 @@ Done.
 ## Prérequis
 
 * [R](https://www.r-project.org/)
+* Perl 5.18 ou supérieur
+* GNU make
 
 ## Installer une version locale de [x.ent](https://github.com/win-stub/x.ent)
 
@@ -34,3 +36,7 @@ Exécuter depuis le répertoire du projet :
     $ ./install_x.ent.sh
 
 Ceci télécharge et installe x.ent et ses dépendances dans un sous-répertoire `R-lib`.
+
+## Lancer l'indexation
+
+    $ make index

@@ -30,12 +30,16 @@ $(REPORTS_OCR_DIR)/%.txt: $(REPORTS_DIR)/%.pdf
 
 dico:
 	cd indexation && \
+	  mkdir -p data/csv && \
+	  rm -f data/csv/dico*.csv && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateCSV.pl $(XENT_HOME) && \
-	  mkdir -p $(XENT_DATA_DIR)/csv && \
-	  mv -v $(XENT_DATA_DIR)/csv_temp/* $(XENT_DATA_DIR)/csv
+	  mv -v $(XENT_DATA_DIR)/csv_temp/* data/csv
 
 sql:
 	cd indexation && \
+	  mkdir -p $(XENT_DATA_DIR)/csv && \
+	  rm -f $(XENT_DATA_DIR)/csv/dico*.csv && \
+	  cp data/csv/dico*.csv $(XENT_DATA_DIR)/csv/ && \
 	  rm -f data/sql/* data/csv/Report.csv && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateSQL.pl $(XENT_HOME)
 
