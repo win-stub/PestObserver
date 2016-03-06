@@ -15,8 +15,12 @@ PDFFILES:=$(wildcard $(REPORTS_DIR)/*.pdf)
 XMLFILES:=$(wildcard $(REPORTS_OCR_DIR)/*.xml)
 TXTFILES:=$(filter-out $(XMLFILES:.xml=.txt),$(patsubst $(REPORTS_DIR)/%.pdf,$(REPORTS_OCR_DIR)/%.txt,$(PDFFILES)))
 
-default: sql
+default: help
 
+help:
+	@echo "Usage: make (index|dico|sql|load-sql|test)"
+
+# Updates the index in R-lib/x.ent/out/output.txt
 index: $(INDEX_OUTPUT_FILE)
 
 $(INDEX_OUTPUT_FILE): $(TXTFILES) $(XMLFILES)
@@ -24,10 +28,12 @@ $(INDEX_OUTPUT_FILE): $(TXTFILES) $(XMLFILES)
 	rm -f $(INDEX_OUTPUT_FILE)
 	Rscript -e 'x.ent::xparse(verbose=TRUE)'
 
+# Creates a .txt file for each .pdf file
 $(REPORTS_OCR_DIR)/%.txt: $(REPORTS_DIR)/%.pdf
 	@mkdir -p $(REPORTS_OCR_DIR)
 	pdf2txt.py -c UTF-8 -o "$@" "$<"
 
+# Creates dictionary files in indexation/data/csv/
 dico:
 	cd indexation && \
 	  mkdir -p data/csv && \
@@ -35,6 +41,7 @@ dico:
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateCSV.pl $(XENT_HOME) && \
 	  mv -v $(XENT_DATA_DIR)/csv_temp/* data/csv
 
+# Creates SQL files in indexation/data/sql/
 sql:
 	cd indexation && \
 	  mkdir -p $(XENT_DATA_DIR)/csv && \
@@ -43,6 +50,7 @@ sql:
 	  rm -f data/sql/* data/csv/Report.csv && \
 	  perl -I Perl -I $(XENT_HOME)/Perl Perl/CreateSQL.pl $(XENT_HOME)
 
+# Loads SQL files into the database
 load-sql:
 	cd indexation/data/sql && \
 	  for f in plant area disease report plant_bioagressor plant_disease; do \
@@ -54,6 +62,7 @@ load-sql:
 	    -p$(if $(MYSQL_PASSWORD),$(MYSQL_PASSWORD),$(error MYSQL_PASSWORD is not defined)) \
 	    $(if $(MYSQL_DB),$(MYSQL_DB),$(error MYSQL_DB is not defined))
 
+# Runs tests in indexation/Perl/t
 test:
 	cd indexation && \
 	  perl -I Perl -I $(XENT_HOME)/Perl -MTest::Harness -e "runtests(glob('Perl/t/*.t'))"
