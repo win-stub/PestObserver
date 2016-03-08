@@ -31,7 +31,7 @@ $(INDEX_OUTPUT_FILE): $(TXTFILES) $(XMLFILES)
 # Creates a .txt file for each .pdf file
 $(REPORTS_OCR_DIR)/%.txt: $(REPORTS_DIR)/%.pdf
 	@mkdir -p $(REPORTS_OCR_DIR)
-	pdf2txt.py -c UTF-8 -o "$@" "$<"
+	pdf2txt.py -c UTF-8 -o "$@" "$<" || touch "$@"
 
 # Creates dictionary files in indexation/data/csv/
 dico:
