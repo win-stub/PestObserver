@@ -173,6 +173,10 @@ function vespa_map(panel, map) {
             var id = reports_by_area[i].key;
             var nb_reports = reports_by_area[i].values;
             var area = map.area(id);
+
+            // skip non existing areas
+            if(!area.length) continue;
+
             // fill with level
             var level = Math.ceil(scale_area_levels(nb_reports));
             area
