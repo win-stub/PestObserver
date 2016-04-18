@@ -1,6 +1,8 @@
-/vendor/*
-/logs/*.log
-/vendor/
-composer.lock
-/web/reports/*.pdf
+/composer.lock
 /config/parameters.json
+/logs/
+/R-lib/
+/reportsOCR/*.txt
+/reportsOCR/*.xml
+/vendor/
+/web/reports/*.pdf

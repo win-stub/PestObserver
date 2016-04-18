@@ -1,0 +1,17 @@
+http://draaf.alsace-champagne-ardenne-lorraine.agriculture.gouv.fr/Surveillance-des-organismes
+http://draaf.aquitaine-limousin-poitou-charentes.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal
+http://draaf.auvergne-rhone-alpes.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal
+http://draaf.bourgogne-franche-comte.agriculture.gouv.fr/Bulletins-de-sante-du-vegetal-BSV
+http://draaf.bretagne.agriculture.gouv.fr/Bulletin-de-Sante-du-Vegetal-BSV
+http://draaf.centre-val-de-loire.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal
+http://draaf.corse.agriculture.gouv.fr/Les-bulletins-de-sante-du-vegetal
+http://draaf.languedoc-roussillon-midi-pyrenees.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal
+http://draaf.nord-pas-de-calais-picardie.agriculture.gouv.fr/Bulletins-de-sante-du-vegetal-BSV
+http://draaf.normandie.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal
+http://draaf.paca.agriculture.gouv.fr/Bulletin-de-sante-du-vegetal-BSV
+http://draaf.pays-de-la-loire.agriculture.gouv.fr/Derniers-BSV
+http://driaaf.ile-de-france.agriculture.gouv.fr/Epidemiosurveillance-et-Bulletin
+
+# les deux suivants sont déjà référencé par aquitaine-limousin…
+http://limousin.synagri.com/synagri/bulletins-de-sante-du-vegetal-00013060
+http://www.aquitainagri.fr/menu-horizontal/publications/bulletins-de-sante-du-vegetal-bsv.html

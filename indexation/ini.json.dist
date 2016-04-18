@@ -1,0 +1,119 @@
+{
+  "corpus": {
+    "dir": "%VESPA_HOME%/reportsOCR"
+  },
+  "eval": {
+    "file": "%VESPA_HOME%/R-lib/x.ent/eval/eval.txt"
+  },
+  "result": {
+    "file": "%VESPA_HOME%/R-lib/x.ent/out/output.txt"
+  },
+  "dico": [
+    {
+      "tag": "p",
+      "file": "dico-p_v3.txt",
+      "node": "true",
+      "col_key": "1",
+      "col_val": "3..*",
+      "get": "all"
+    },
+    {
+      "tag": "b",
+      "file": "dico-b_v3.txt",
+      "node": "true",
+      "col_key": "1",
+      "col_val": "3..*",
+      "get": "all"
+    },
+    {
+      "tag": "m",
+      "file": "dico-m_v3.txt",
+      "node": "true",
+      "col_key": "1",
+      "col_val": "3..*",
+      "get": "all"
+    },
+    {
+      "tag": "a",
+      "file": "dico-a_v2.txt",
+      "node": "true",
+      "col_key": "1",
+      "col_val": "3..*",
+      "get": "all"
+    },
+    {
+      "tag": "r",
+      "file": "dico-r_v2.txt",
+      "node": "false",
+      "col_key": "5",
+      "col_val": "4,6..*",
+      "get": "1"
+    },
+    {
+      "tag": "f",
+      "file": "dico-f_v3.txt",
+      "node": "false",
+      "col_key": "1",
+      "col_val": "2..*",
+      "get": "all"
+    }
+  ],
+  "unitex": {
+    "system": {
+      "tool_unitex": "%UNITEX_HOME%/App/UnitexToolLogger",
+      "main_graph": "%VESPA_HOME%/R-lib/x.ent/Unitex/graphs/VESPA.grf",
+      "my_unitex": "%UNITEX_HOME%/French",
+      "dico": [
+        "%UNITEX_HOME%/French/Dela/dela-fr-public.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Communes_France_FR_utf8.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Toponyme_Departement_France_FR_utf8.bin",
+        "%VESPA_HOME%/R-lib/x.ent/Unitex/dicos/Delaf_Toponyme_Region_France_FR_utf8.bin"
+      ]
+    },
+    "result": [
+      {
+        "tag": "n",
+        "tag_unitex": "NUI",
+        "get": "all"
+      },
+      {
+        "tag": "z",
+        "tag_unitex": "NEG",
+        "get": "all"
+      },
+      {
+        "tag": "d",
+        "tag_unitex": "DAT",
+        "get": "1"
+      }
+    ]
+  },
+  "relation": {
+    "type": "1",
+    "left": "250",
+    "right": "500",
+    "root": "p",
+    "negation": "z",
+    "link": [
+      "p:b",
+      "p:m",
+      "p:b:n",
+      "p:m:n"
+    ]
+  },
+  "avoid": {
+    "file": "avoid.txt"
+  },
+  "replace": {
+    "file": "replace.txt"
+  },
+  "stopword": {
+    "file": "frenchST.txt"
+  },
+  "blacklist": [
+    {
+      "tag": "v",
+      "file": "blacklist_ville.txt"
+    }
+  ]
+}
